@@ -365,8 +365,10 @@ class CI_DB_forge {
 	{
 		if ($name==''){
 			$data=$this->db->query("SHOW TABLES")->result_array();
-			foreach ($data as $key => $value) {
-				$this->column_cache($value);
+			foreach ($data as $value) {
+				foreach ($value as $key => $table) {
+					$this->column_cache($table);
+				}
 			}
 		}else{
 			$data=$this->db->query("SHOW COLUMNS FROM `$name`")->result_array();

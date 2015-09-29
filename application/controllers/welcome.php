@@ -2,10 +2,8 @@
 
 class Welcome extends CI_Controller {
     function index(){
-        $this->load->view('test.html',['title'=>'ok!']);
-    }
-
-function t2(){
-        $this->load->view('test.html',['title'=>'fuck!']);
+    	$this->load->dbforge();
+		$this->dbforge->column_cache();
+//         $this->load->view('test.html',['title'=>'ok!']);
     }
 }

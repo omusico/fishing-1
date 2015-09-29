@@ -92,10 +92,10 @@
  * Note: Since the config file data is cached it doesn't
  * hurt to load it here.
  */
-	if (isset($assign_to_config['subclass_prefix']) AND $assign_to_config['subclass_prefix'] != '')
-	{
-		get_config(array('subclass_prefix' => $assign_to_config['subclass_prefix']));
-	}
+// 	if (isset($assign_to_config['subclass_prefix']) AND $assign_to_config['subclass_prefix'] != '')
+// 	{
+// 		get_config(array('subclass_prefix' => $assign_to_config['subclass_prefix']));
+// 	}
 
 /*
  * ------------------------------------------------------
@@ -197,7 +197,6 @@
 	// 		exit;
 	// 	}
 	// }
-
 /*
  * -----------------------------------------------------
  * Load the security class for xss and csrf support

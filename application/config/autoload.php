@@ -16,7 +16,6 @@ $autoload['packages'] = array();
 */
 
 $autoload['libraries'] = array('database');
-
 $autoload['helper'] = array();
 
 $autoload['config'] = array();
