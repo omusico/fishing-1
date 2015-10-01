@@ -3,10 +3,10 @@
 $active_group = 'default';
 $active_record = TRUE;
 
-$db['default']['hostname'] = '103.238.226.48';
-$db['default']['username'] = 'jobgod';
+$db['default']['hostname'] = '103.238.226.48:3307';
+$db['default']['username'] = 'fishing';
 $db['default']['password'] = 'whoknows';
-$db['default']['database'] = 'jobgod';
+$db['default']['database'] = 'fishing';
 $db['default']['dbdriver'] = 'mysql';
 $db['default']['dbprefix'] = '';
 $db['default']['pconnect'] = TRUE;

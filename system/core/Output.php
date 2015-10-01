@@ -326,7 +326,8 @@ class CI_Output {
 		// Note:  We use globals because we can't use $CI =& get_instance()
 		// since this function is sometimes called by the caching mechanism,
 		// which happens before the CI super object is available.
-		global $BM, $CFG;
+// 		global $BM, $CFG;
+		global $CFG;
 
 		// Grab the super object if we can.
 		if (class_exists('CI_Controller'))
@@ -357,15 +358,15 @@ class CI_Output {
 		// Parse out the elapsed time and memory usage,
 		// then swap the pseudo-variables with the data
 
-		$elapsed = $BM->elapsed_time('total_execution_time_start', 'total_execution_time_end');
+// 		$elapsed = $BM->elapsed_time('total_execution_time_start', 'total_execution_time_end');
 
-		if ($this->parse_exec_vars === TRUE)
-		{
-			$memory	 = ( ! function_exists('memory_get_usage')) ? '0' : round(memory_get_usage()/1024/1024, 2).'MB';
+// 		if ($this->parse_exec_vars === TRUE)
+// 		{
+// 			$memory	 = ( ! function_exists('memory_get_usage')) ? '0' : round(memory_get_usage()/1024/1024, 2).'MB';
 
-			$output = str_replace('{elapsed_time}', $elapsed, $output);
-			$output = str_replace('{memory_usage}', $memory, $output);
-		}
+// 			$output = str_replace('{elapsed_time}', $elapsed, $output);
+// 			$output = str_replace('{memory_usage}', $memory, $output);
+// 		}
 
 		// --------------------------------------------------------------------
 
@@ -446,7 +447,7 @@ class CI_Output {
 		}
 
 		log_message('debug', "Final output sent to browser");
-		log_message('debug', "Total execution time: ".$elapsed);
+// 		log_message('debug', "Total execution time: ".$elapsed);
 	}
 
 	// --------------------------------------------------------------------

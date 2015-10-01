@@ -560,5 +560,20 @@ if ( ! function_exists('html_escape'))
 	}
 }
 
+function ajax($state=200,$info='ok',$data=NULL) {
+	header('Content-Type:application/json; charset=utf-8');
+	echo json_encode(['state'=>$state,'info'=>$info,'data'=>$data]);
+}
+function busy() {
+	ajax(0,'服务器繁忙，请重试！');
+}
+function noRights() {
+	ajax(400,'bye-bye');
+}
+function getToken() {
+	if (isset($_SERVER['HTTP_TOKEN'])){
+		return ['token'=>$_SERVER['HTTP_TOKEN'],'id'=>$_SERVER['HTTP_UID']];
+	}else  return ['id'=>0,'token'=>''];
+}
 /* End of file Common.php */
 /* Location: ./system/core/Common.php */
