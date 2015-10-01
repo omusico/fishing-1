@@ -562,7 +562,7 @@ if ( ! function_exists('html_escape'))
 
 function ajax($state=200,$info='ok',$data=NULL) {
 	header('Content-Type:application/json; charset=utf-8');
-	echo json_encode(['state'=>$state,'info'=>$info,'data'=>$data]);
+	echo json_encode(['status'=>$state,'info'=>$info,'data'=>$data]);
 }
 function busy() {
 	ajax(0,'服务器繁忙，请重试！');

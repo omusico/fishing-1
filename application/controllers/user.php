@@ -52,16 +52,21 @@ class User extends CI_Controller {
 	}
 	
 	function bindTel(){
-		if (!$user->check()) noRights();
-		$data=$this->input->post(['tel','code']);
+		$data=$this->input->post(['tel','code','password']);
 		if (!$data)
 			busy();
+		$token=getToken();
+		$result =$this->db->find('user', $token['id'],'id','token,password');
+		if (empty($result))
+			busy();
+		if ($result['token']!=$token['token']||$result['password']!==md5(md5($data['password']).'fish'))
+			ajax(202, '原密码错误！');
 		if (!$this->m->checkTel($data['tel']))
 			ajax(201, '该手机号已被注册!');
 		$this->load->helper('mob');
 		$response =mobValidate($data['tel'], $data['code']);
 		if ($response === true) {
-			$this->db->where('id',UID)->update('user',['tel',$data['tel']])?ajax(200, '验证码正确，注册成功!') : ajax(0, '服务器繁忙，请重试！');
+			$this->db->where('id',$token['id'])->update('user',['tel',$data['tel']])?ajax(200, '验证码正确，注册成功!') : ajax(0, '服务器繁忙，请重试！');
 		}else {
 			ajax($response, '验证码错误!');
 		}
@@ -76,9 +81,9 @@ class User extends CI_Controller {
 	
 	//获取用户信息
 	function getUserinfo(){
-		$id=(int)$this->input->post('id');
+		$id=$this->input->post('id');
 		$res=$this->db->find('user', $id,'id','id,name,address,age,skill,gender,avatar,sign');
-		empty($res)?ajax(200,'',$res):ajax(100,'无此用户');
+		empty($res)?ajax(100,'无此用户'):ajax(200,'',$res);
 	}
 	
 	function getMyinfo(){

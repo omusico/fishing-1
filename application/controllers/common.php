@@ -2,8 +2,6 @@
 
 class Common extends CI_Controller {
     function index(){
-    	$this->load->dbforge();
-		$this->dbforge->column_cache();
-        $this->load->view('test.html',['title'=>'ok!']);
+        echo '呵呵';
     }
 }

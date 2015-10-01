@@ -571,37 +571,6 @@ class CI_Input {
 	*/
 	function _sanitize_globals()
 	{
-		// It would be "wrong" to unset any of these GLOBALS.
-		// $protected = array('_SERVER', '_GET', '_POST', '_FILES', '_REQUEST',
-		// 					'_SESSION', '_ENV', 'GLOBALS', 'HTTP_RAW_POST_DATA',
-		// 					'system_folder', 'application_folder', 'BM', 'EXT',
-		// 					'CFG', 'URI', 'RTR', 'OUT', 'IN');
-
-		// Unset globals for securiy.
-		// This is effectively the same as register_globals = off. it has been done in php.ini.
-		// foreach (array($_GET, $_POST, $_COOKIE) as $global)
-		// {
-		// 	if ( ! is_array($global))
-		// 	{
-		// 		if ( ! in_array($global, $protected))
-		// 		{
-		// 			global $$global;
-		// 			$$global = NULL;
-		// 		}
-		// 	}
-		// 	else
-		// 	{
-		// 		foreach ($global as $key => $val)
-		// 		{
-		// 			if ( ! in_array($key, $protected))
-		// 			{
-		// 				global $$key;
-		// 				$$key = NULL;
-		// 			}
-		// 		}
-		// 	}
-		// }
-
 		// Is $_GET data allowed? If not we'll set the $_GET to an empty array
 		if ($this->_allow_get_array == FALSE)
 		{
@@ -613,7 +582,7 @@ class CI_Input {
 			{
 				foreach ($_GET as $key => $val)
 				{
-					$_GET[$this->$key] = $this->_clean_input_data($val);
+					$_GET[$key] = $this->_clean_input_data($val);
 				}
 			}
 		}
@@ -623,25 +592,20 @@ class CI_Input {
 		{
 			foreach ($_POST as $key => $val)
 			{
-				$_POST[$this->$key] = $this->_clean_input_data($val);
+				$_POST[$key] = $this->_clean_input_data($val);
 			}
 		}
 
 		// Clean $_COOKIE Data
 		if (is_array($_COOKIE) AND count($_COOKIE) > 0)
 		{
-			// Also get rid of specially treated cookies that might be set by a server
-			// or silly application, that are of no use to a CI application anyway
-			// but that when present will trip our 'Disallowed Key Characters' alarm
-			// http://www.ietf.org/rfc/rfc2109.txt
-			// note that the key names below are single quoted strings, and are not PHP variables
 			unset($_COOKIE['$Version']);
 			unset($_COOKIE['$Path']);
 			unset($_COOKIE['$Domain']);
 
 			foreach ($_COOKIE as $key => $val)
 			{
-				$_COOKIE[$this->$key] = $this->_clean_input_data($val);
+				$_COOKIE[$key] = $this->_clean_input_data($val);
 			}
 		}
 
@@ -718,36 +682,6 @@ class CI_Input {
 
 		return $str;
 	}
-
-	// --------------------------------------------------------------------
-
-	/** as for key, no need to clean
-	* Clean Keys
-	*
-	* This is a helper function. To prevent malicious users
-	* from trying to exploit keys we make sure that keys are
-	* only named with alpha-numeric text and a few other items.
-	*
-	* @access	private
-	* @param	string
-	* @return	string
-	*/
-	/*function _clean_input_keys($str)
-	{
-		if ( ! preg_match("/^[a-z0-9:_\/-]+$/i", $str))
-		{
-			exit('Disallowed Key Characters.');
-		}
-
-		// Clean UTF-8 if supported
-		if (UTF8_ENABLED === TRUE)
-		{
-			$str = $this->uni->clean_string($str);
-		}
-
-		return $str;
-	}*/
-
 
 	// --------------------------------------------------------------------
 
