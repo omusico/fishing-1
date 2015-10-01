@@ -4,7 +4,8 @@
 */cache/*
 */cache/!index.html
 */cache/!.htaccess
-*/Runtime/*
+/application/Runtime/compile/*
+!/application/Runtime/cache/*.json
 .buildpath
 .project
 .settings/*
