@@ -25,13 +25,8 @@ class User extends CI_Controller {
 	function login(){
 		$input=$this->input->post(['tel','password']);
 		if (!$input) busy();
-		$result =$this->db->find('user', $input['tel'],'tel');
-		if (empty($result)) ajax(202,'此用户不存在！');
-		if ($result['password']!==md5(md5($info['password']).'fish')) ajax(201,'密码错误！');
-		$result['token'] = md5(uniqid().rand());
-		$this->db->where('id',$result['id'])->update('user',['token'=>$result['token'],'type'=>0]);
-		unset($result['password']);
-		ajax(200,'',$result);
+		$res=$this->m->login($input);
+		ajax(200,'',$res);
 	}
 	
 	function checkTel(){
