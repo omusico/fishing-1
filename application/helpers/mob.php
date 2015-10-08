@@ -1,6 +1,6 @@
 <?php 
 	function mobValidate($userTel, $userCode){
-		$appKey = '587c0a5919c6'; // appKey
+		$appKey = 'a5be1fdc254c'; // appKey
 		$api = 'https://api.sms.mob.com/sms/verify'; // 请求地址
 		// 请求参数
 		$params = array(

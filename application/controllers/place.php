@@ -13,7 +13,10 @@ class Place extends CI_Controller {
 	
 	function getPlace() {
 		$time=$this->input->post('time');
-		$data=$this->db->query("SELECT * FROM place WHERE time>?",$time)->result_array();
+		$data=$this->db->query("SELECT * FROM place WHERE time>? AND state=1",$time)->result_array();
+		foreach ($data as $key => $value) {
+			$data[$key]['preview']=json_decode($data[$key]['preview'],TRUE);
+		}
 		ajax(200,'ok',$data);
 	}
 	

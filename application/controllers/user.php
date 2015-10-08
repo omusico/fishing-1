@@ -10,7 +10,7 @@ class User extends CI_Controller {
 	function register(){
 		$data=$this->db->create('user');
 		if (!$this->m->checkTel($data['tel']))
-			ajax(201, '该手机号已被注册!');
+			ajax(1002, '该手机号已被注册!');
 		$this->load->helper('mob');
 		$response =mobValidate($data['tel'], $data['code']);
 		if ($response === true) {
@@ -18,20 +18,20 @@ class User extends CI_Controller {
 					'password'=>md5(md5($data['password']).'fish')]);
 			$flag ?ajax(200, '验证码正确，注册成功!') : ajax(0, '服务器繁忙，请重试！');
 		}else {
-			ajax($response, '验证码错误!');
+			ajax(1, '验证码错误!'.$response);
 		}
 	}
 	
 	function login(){
 		$input=$this->input->post(['tel','password']);
-		if (!$input) busy();
+		if (!$input) errInput();
 		$res=$this->m->login($input);
 		ajax(200,'',$res);
 	}
 	
 	function checkTel(){
 		$userTel = $this->input->post('tel');
-		$this->m->checkTel($userTel) ? ajax(200, '可以注册'): ajax(201, '该手机号已被注册!') ;
+		$this->m->checkTel($userTel) ? ajax(200, '可以注册'): ajax(1002, '该手机号已被注册!') ;
 	}
 	
 	function modPass(){
@@ -39,25 +39,25 @@ class User extends CI_Controller {
 		$data=$this->db->find('user', $token['id'],'id','token,password');
 		if (!empty($data)){
 			if ($data['token']!=$token['token']) noRights();
-			if ($data['password']!=md5(md5(I('post.oldpwd')).'fish')) ajax(201,'原密码错误！');
+			if ($data['password']!=md5(md5(I('post.oldpwd')).'fish')) ajax(1003,'原密码错误！');
 			$flag=$this->db->where('id',$token['id'])->update(['password'=>md5(md5(I('post.newpwd')).'fish')]);
 			if ($flag!==false) ajax(200, '密码修改成功!');
 			else busy();
-		}else ajax(202,'此用户不存在！');
+		}else ajax(1001,'此用户不存在！');
 	}
 	
 	function bindTel(){
 		$data=$this->input->post(['tel','code','password']);
 		if (!$data)
-			busy();
+			errInput();
 		$token=getToken();
 		$result =$this->db->find('user', $token['id'],'id','token,password');
 		if (empty($result))
 			busy();
 		if ($result['token']!=$token['token']||$result['password']!==md5(md5($data['password']).'fish'))
-			ajax(202, '原密码错误！');
+			ajax(1003, '原密码错误！');
 		if (!$this->m->checkTel($data['tel']))
-			ajax(201, '该手机号已被注册!');
+			ajax(1002, '该手机号已被注册!');
 		$this->load->helper('mob');
 		$response =mobValidate($data['tel'], $data['code']);
 		if ($response === true) {
@@ -69,21 +69,21 @@ class User extends CI_Controller {
 	
 	//修改用户信息
 	function modInfo(){
-		if (!$user->check()) noRights();
+		if (!$this->m->check()) noRights();
 		$data=$this->db->field(['name','gender','address','avatar','age','skill','sign'])->create();
-		$this->db->where("id",UID)->update('user',$data)?ajax(200, '修改信息成功!'):busy();
+		$this->db->where("id",UID)->update('user',$data)?ajax():busy();
 	}
 	
 	//获取用户信息
 	function getUserinfo(){
 		$id=$this->input->post('id');
 		$res=$this->db->find('user', $id,'id','id,name,address,age,skill,gender,avatar,sign');
-		empty($res)?ajax(100,'无此用户'):ajax(200,'',$res);
+		empty($res)?ajax(1001,'无此用户'):ajax(200,'',$res);
 	}
 	
 	function getMyinfo(){
 		if (!$this->m->check()) noRights();
-		$res=$this->db->find('user', UID,'id','id,name,address,age,skill,gender,avatar,sign,token');
+		$res=$this->db->find('user', UID,'id','id,name,address,age,skill,gender,avatar,sign,token,rongToken');
 		ajax(200,'',$res);
 	}
 	

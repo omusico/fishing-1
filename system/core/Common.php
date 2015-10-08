@@ -30,34 +30,6 @@
 // ------------------------------------------------------------------------
 
 /**
-* Determines if the current version of PHP is greater then the supplied value
-*
-* Since there are a few places where we conditionally test for PHP > 5
-* we'll set a static variable.
-*
-* @access	public
-* @param	string
-* @return	bool	TRUE if the current version is $version or higher
-*/
-if ( ! function_exists('is_php'))
-{
-	function is_php($version = '5.0.0')
-	{
-		static $_is_php;
-		$version = (string)$version;
-
-		if ( ! isset($_is_php[$version]))
-		{
-			$_is_php[$version] = (version_compare(PHP_VERSION, $version) < 0) ? FALSE : TRUE;
-		}
-
-		return $_is_php[$version];
-	}
-}
-
-// ------------------------------------------------------------------------
-
-/**
  * Tests for file writability
  *
  * is_writable() returns TRUE on Windows servers when you really can't write to
@@ -563,12 +535,19 @@ if ( ! function_exists('html_escape'))
 function ajax($state=200,$info='ok',$data=NULL) {
 	header('Content-Type:application/json; charset=utf-8');
 	echo json_encode(['status'=>$state,'info'=>$info,'data'=>$data]);
+	exit();
 }
 function busy() {
 	ajax(0,'服务器繁忙，请重试！');
 }
 function noRights() {
 	ajax(400,'bye-bye');
+}
+function attack() {
+	ajax(401,'bye-bye');
+}
+function errInput() {
+	ajax(9,'');
 }
 function getToken() {
 	if (isset($_SERVER['HTTP_TOKEN'])){

@@ -9,4 +9,11 @@ class Common extends CI_Controller {
 		$this->load->dbforge();
 		$this->dbforge->column_cache();
 	}
+	
+	function qiniuToken(){
+		$this->load->model('muser');
+		if (!$this->muser->check()) noRights();
+		$this->load->library('qiniu');
+		ajax(200,'',array("token"=>$this->qiniu->uploadToken()));
+	}
 }
