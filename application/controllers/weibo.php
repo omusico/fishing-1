@@ -10,13 +10,47 @@ class Weibo extends CI_Controller {
 		$this->load->model('muser','user');
 		if (!$this->user->check()) noRights();
 		$data=$this->input->post(['address','content','images']);
-		if (!$data) busy();
+		if (!$data) errInput();
+		$data['images']=gzcompress($data['images']);
 		$data['author']=UID;
 		$data['time']=time();
-		$this->db->insert('weibo',$data);
-		ajax();
+		$flag=$this->db->insert('weibo',$data);
+		$flag?ajax():busy();
 	}
 	
-	function test() {
+	function del() {
+		$this->load->model('muser','user');
+		if (!$this->user->check()) noRights();
+		$id=$this->input->post('id');
+		$uid=$this->db->find('weibo',$id,'id','uid');
+		if (!empty($uid)&&$uid['uid']==UID){
+			$this->db->delete('weibo',['id'=>$id])?ajax():busy();//做了外键约束，只删微博就够了
+		}else attack();
+	}
+	
+	function comment() {
+		$this->load->model('muser','user');
+		if (!$this->user->check()) noRights();
+		$data=$this->input->post(['fid','wid','content']);
+		if (!$data) errInput();
+		$data['uid']=UID;
+		$data['time']=time();
+		$flag=$this->db->insert('wcomment',$data);
+		$flag?ajax():busy();
+	}
+	
+	function getList() {
+		$input=$this->input->post(['page','type']);
+		if (!$input) errInput();
+		$this->load->model('mweibo','m');
+		ajax(0,'',$this->m->getList($input));
+	}
+	
+	function getItem() {
+		$id=$this->input->post('id');
+		$this->load->model('mweibo','m');
+		$data=$this->m->getItem($id);
+		if ($data==FALSE) ajax(3001,'没有数据');
+		else ajax(0,'',$data);
 	}
 }

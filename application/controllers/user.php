@@ -16,9 +16,9 @@ class User extends CI_Controller {
 		if ($response === true) {
 			$flag = $this->db->insert('user',['tel'=>$data['tel'],'token'=>uniqid('fish'),
 					'password'=>md5(md5($data['password']).'fish')]);
-			$flag ?ajax(200, '验证码正确，注册成功!') : ajax(0, '服务器繁忙，请重试！');
+			$flag ?ajax(0, '验证码正确，注册成功!') : busy();
 		}else {
-			ajax(1, '验证码错误!'.$response);
+			$response==468?ajax(1004, '验证码错误!'):ajax(1, '验证码平台出错!'.$response);
 		}
 	}
 	
@@ -26,12 +26,12 @@ class User extends CI_Controller {
 		$input=$this->input->post(['tel','password']);
 		if (!$input) errInput();
 		$res=$this->m->login($input);
-		ajax(200,'',$res);
+		ajax(0,'',$res);
 	}
 	
 	function checkTel(){
 		$userTel = $this->input->post('tel');
-		$this->m->checkTel($userTel) ? ajax(200, '可以注册'): ajax(1002, '该手机号已被注册!') ;
+		$this->m->checkTel($userTel) ? ajax(0, '可以注册'): ajax(1002, '该手机号已被注册!') ;
 	}
 	
 	function modPass(){
@@ -41,7 +41,7 @@ class User extends CI_Controller {
 			if ($data['token']!=$token['token']) noRights();
 			if ($data['password']!=md5(md5(I('post.oldpwd')).'fish')) ajax(1003,'原密码错误！');
 			$flag=$this->db->where('id',$token['id'])->update(['password'=>md5(md5(I('post.newpwd')).'fish')]);
-			if ($flag!==false) ajax(200, '密码修改成功!');
+			if ($flag!==false) ajax(0, '密码修改成功!');
 			else busy();
 		}else ajax(1001,'此用户不存在！');
 	}
@@ -61,9 +61,9 @@ class User extends CI_Controller {
 		$this->load->helper('mob');
 		$response =mobValidate($data['tel'], $data['code']);
 		if ($response === true) {
-			$this->db->where('id',$token['id'])->update('user',['tel',$data['tel']])?ajax(200, '验证码正确，注册成功!') : ajax(0, '服务器繁忙，请重试！');
+			$this->db->where('id',$token['id'])->update('user',['tel',$data['tel']])?ajax(0, '验证码正确，注册成功!') : ajax(0, '服务器繁忙，请重试！');
 		}else {
-			ajax($response, '验证码错误!');
+			$response==468?ajax(1004, '验证码错误!'):ajax(1, '验证码平台出错!'.$response);
 		}
 	}
 	
@@ -78,13 +78,13 @@ class User extends CI_Controller {
 	function getUserinfo(){
 		$id=$this->input->post('id');
 		$res=$this->db->find('user', $id,'id','id,name,address,age,skill,gender,avatar,sign');
-		empty($res)?ajax(1001,'无此用户'):ajax(200,'',$res);
+		empty($res)?ajax(1001,'无此用户'):ajax(0,'',$res);
 	}
 	
 	function getMyinfo(){
 		if (!$this->m->check()) noRights();
 		$res=$this->db->find('user', UID,'id','id,name,address,age,skill,gender,avatar,sign,token,rongToken');
-		ajax(200,'',$res);
+		ajax(0,'',$res);
 	}
 	
 	function attend()
@@ -105,6 +105,6 @@ class User extends CI_Controller {
 	{
 		if (!$this->m->check()) noRights();
 		$res=$this->db->where("id in (SELECT uid FROM attention WHERE fromid=?)",UID,FALSE)->select('id,name,avatar')->get('attention')->result_array();
-		ajax(200,'',$res);
+		ajax(0,'',$res);
 	}
 }

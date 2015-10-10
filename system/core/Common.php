@@ -532,13 +532,13 @@ if ( ! function_exists('html_escape'))
 	}
 }
 
-function ajax($state=200,$info='ok',$data=NULL) {
+function ajax($state=0,$info='ok',$data=NULL) {
 	header('Content-Type:application/json; charset=utf-8');
 	echo json_encode(['status'=>$state,'info'=>$info,'data'=>$data]);
 	exit();
 }
 function busy() {
-	ajax(0,'服务器繁忙，请重试！');
+	ajax(100,'服务器繁忙，请重试！');
 }
 function noRights() {
 	ajax(400,'bye-bye');

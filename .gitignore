@@ -5,7 +5,7 @@
 */cache/!index.html
 */cache/!.htaccess
 /application/Runtime/compile/*
-!/application/Runtime/cache/*.json
+/application/Runtime/cache/*.php
 .buildpath
 .project
 .settings/*
