@@ -39,17 +39,34 @@ class Weibo extends CI_Controller {
 		$flag?ajax():busy();
 	}
 	
-	function getList() {
-		$type=$this->input->post('type');
-		if (!$type) errInput();
-		$input=['type'=>$type,'page'=>$this->input->post('page',FALSE,0),'count'=>$this->input->post('count',FALSE,20)];
-		$this->load->model('mweibo','m');
+	function getListGround() {
+		$input=['type'=>0,'page'=>$this->input->post('page',FALSE,0),'count'=>$this->input->post('count',FALSE,20)];
+		ajax(0,'',$this->m->getList($input));
+	}
+	
+	function getListFriend() {
+		$this->load->model('muser','user');
+		if (!$this->user->check()) noRights();
+		$input=['type'=>1,'page'=>$this->input->post('page',FALSE,0),'count'=>$this->input->post('count',FALSE,20)];
+		ajax(0,'',$this->m->getList($input));
+	}
+	
+	function getListNear() {
+		$input=$this->input->post(['lng','lat']);
+		if (!$input) errInput();
+		$input=array_merge($input,['type'=>2,'page'=>$this->input->post('page',FALSE,0),'count'=>$this->input->post('count',FALSE,20)]);
+		ajax(0,'',$this->m->getList($input));
+	}
+	
+	function getListMy() {
+		$this->load->model('muser','user');
+		if (!$this->user->check()) noRights();
+		$input=['type'=>3,'page'=>$this->input->post('page',FALSE,0),'count'=>$this->input->post('count',FALSE,20)];
 		ajax(0,'',$this->m->getList($input));
 	}
 	
 	function getItem() {
 		$id=$this->input->post('id');
-		$this->load->model('mweibo','m');
 		$data=$this->m->getItem($id);
 		if ($data==FALSE) ajax(3001,'没有数据');
 		else ajax(0,'',$data);

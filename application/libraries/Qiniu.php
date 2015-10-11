@@ -43,7 +43,7 @@ class Qiniu
 
     public function uploadToken($key = null,$expires = 600,$policy = null,$strictPolicy = true) {
         $deadline = time() + $expires;
-        $scope = 'fish';
+        $scope = 'fishing';
         if ($key != null) {
             $scope .= ':' . $key;
         }
