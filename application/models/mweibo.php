@@ -6,7 +6,7 @@ class Mweibo extends CI_Model {
 		if (!$data)
 			return FALSE;
 		$data['images']=json_decode(gzuncompress($data['images']),TRUE);
-		$comment=$this->db->field('*,(SELECT avatar FROM user WHERE id=weibo.authorId) authorAvatar,(SELECT name FROM user WHERE id=weibo.authorId) authorName')
+		$comment=$this->db->field('*,(SELECT avatar FROM user WHERE id=weibo.uid) authorAvatar,(SELECT name FROM user WHERE id=weibo.authorId) uid')
 			->where('wid',$id)->get('wcomment');
 		$link=array();$res=array();//链表，link存每个id的地址，res是结果，指针都指向comment的数据。
 		foreach ($comment as $key=>$value) {
@@ -25,7 +25,11 @@ class Mweibo extends CI_Model {
 	}
 	
 	function getList($uid,$limit) {
-		$this->db->where('authorId',$uid)->limit($limit['page']*$limit['size'],$limit['size'])->order_by('id','desc');
+		$this->db->limit($limit['page']*$limit['count'],$limit['count'])->order_by('id','desc');
+		switch ($limit['type']){
+			case 1:
+				break;
+		}
 		$data=$this->db->select('*,(SELECT avatar FROM user WHERE id=weibo.authorId) authorAvatar,(SELECT name FROM user WHERE id=weibo.authorId) authorName')->get('weibo');
 		return $this->_dealData($data);
 	}

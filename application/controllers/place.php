@@ -37,7 +37,7 @@ class Place extends CI_Controller {
 		if (!$data) errInput();
 		if (!is_numeric($data['score'])||$data['score']<0||$data['score']>10) attack();
 		$data['images']=gzcompress($data['images']);
-		$data['author']=UID;
+		$data['uid']=UID;
 		$data['time']=time();
 		$flag=$this->db->insert('score',$data);
 		if (!$flag) busy();
@@ -70,6 +70,6 @@ class Place extends CI_Controller {
 		$input=['id'=>$id,'page'=>$this->input->post('page',FALSE,0),'count'=>$this->input->post('count',FALSE,20)];
 		$this->load->model('mplace','m');
 		$data=$this->m->scoreList($input);
-		$data?ajax(0,'',$data):ajax(2001,'钓点不存在');
+		ajax(0,'',$data);
 	}
 }

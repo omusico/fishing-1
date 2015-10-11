@@ -40,8 +40,9 @@ class Weibo extends CI_Controller {
 	}
 	
 	function getList() {
-		$input=$this->input->post(['page','type']);
-		if (!$input) errInput();
+		$type=$this->input->post('type');
+		if (!$type) errInput();
+		$input=['type'=>$type,'page'=>$this->input->post('page',FALSE,0),'count'=>$this->input->post('count',FALSE,20)];
 		$this->load->model('mweibo','m');
 		ajax(0,'',$this->m->getList($input));
 	}

@@ -25,6 +25,11 @@ class Mplace extends CI_Model {
 	}
 	
 	function scoreList($input) {
-		$this->db->limit($input['count']*$input['page'],$input['count']);
+		$this->db->limit($input['count']*$input['page'],$input['count'])->order_by('id','desc');
+		$data=$this->db->where('pid',$input['id'])->get('score')->result_array();
+		foreach ($data as $key => $value) {
+			$data[$key]['images']=json_decode(gzuncompress($data[$key]['images']),TRUE);
+		}
+		return $data;
 	}
 }

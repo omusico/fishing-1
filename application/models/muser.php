@@ -23,7 +23,7 @@ class Muser extends CI_Model {
 	function login($input) {
 		$result =$this->db->find('user', $input['tel'],'tel');
 		if (empty($result)) ajax(1001,'此用户不存在！');
-		if ($result['password']!==md5(md5($info['password']).'fish')) ajax(1003,'密码错误！');
+		if ($result['password']!==md5(md5($input['password']).'fish')) ajax(1003,'密码错误！');
 		$result['token'] = md5(uniqid().rand());
 		if ($result['rongToken']==''){
 			$this->load->library('rc');
