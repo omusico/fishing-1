@@ -5,7 +5,7 @@ class Mplace extends CI_Model {
 		$data=$this->db->find('score',$id,'id');
 		if (!$data)
 			return FALSE;
-		$data['picture']=json_decode(gzuncompress($data['picture']),TRUE);
+		$data['images']=json_decode(gzuncompress($data['images']),TRUE);
 		$comment=$this->db->field('*,(SELECT avatar FROM user WHERE id=scomment.uid) authorAvatar,(SELECT name FROM user WHERE id=scomment.uid) authorName')
 			->where('pid',$id)->get('scomment');
 		$link=array();$res=array();//链表，link存每个id的地址，res是结果，指针都指向comment的数据。

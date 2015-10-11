@@ -14,8 +14,11 @@ class Place extends CI_Controller {
 	}
 	
 	function getPlace() {
-		$time=$this->input->post('time');
-		$data=$this->db->query("SELECT * FROM place WHERE time>? AND state=1",$time)->result_array();
+		$time=$this->input->post('time',FALSE,0);
+		$data=$this->db->query("SELECT id,name,picture,address,score,cost,costType,fishType,poolType,serviceType,lat,lng,tel FROM place WHERE time>? AND state=1",$time)->result_array();
+		foreach ($data as $key => $value) {
+			$data[$key]['picture']=json_decode(gzuncompress($data[$key]['picture']),TRUE);
+		}
 		ajax(0,'ok',$data);
 	}
 	
@@ -23,7 +26,7 @@ class Place extends CI_Controller {
 		$id=$this->input->post('id');
 		$data=$this->db->find('place', $id);
 		if (empty($data)) ajax(2001,'没有数据');
-		$data['picture']=json_decode($data['picture'],TRUE);
+		$data['picture']=json_decode(gzuncompress($data['picture']),TRUE);
 		$this->load->model('muser','user');
 		if ($this->user->check())
 			$data['collectStatus']=$this->db->where(['pid'=>$id,'uid'=>UID])->get('collection')->num_rows();

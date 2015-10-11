@@ -43,9 +43,15 @@ class Weibo extends CI_Controller {
 		if (!$this->user->check()) noRights();
 		$id=$this->input->post('id');
 		if (!$id) errInput();
-		$this->m->praise($id);
-		if (!$this->db->query("UPDATE weibo SET praiseCount=praiseCount+1 WHERE id=?",$id))
-		$this->db->insert('praise',['uid'=>UID,'wid'=>$id]);
+		$this->m->praise($id)?ajax():busy();
+	}
+	
+	function unPraise() {
+		$this->load->model('muser','user');
+		if (!$this->user->check()) noRights();
+		$id=$this->input->post('id');
+		if (!$id) errInput();
+		$this->m->unPraise($id)?ajax():busy();
 	}
 	
 	function getListGround() {

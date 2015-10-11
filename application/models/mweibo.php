@@ -45,8 +45,18 @@ class Mweibo extends CI_Model {
 		return $data;
 	}
 	
-	function praise() {
-		;
+	function praise($id) {
+		$has=$this->db->where(['wid'=>$id,'uid'=>UID])->get('praise')->num_rows();
+		if ($has) return TRUE;
+		if (!$this->db->query("UPDATE weibo SET praiseCount=praiseCount+1 WHERE id=?",$id)) return FALSE;
+		return $this->db->insert('praise',['uid'=>UID,'wid'=>$id]);
+	}
+	
+	function unPraise($id) {
+		$has=$this->db->where(['wid'=>$id,'uid'=>UID])->get('praise')->num_rows();
+		if (!$has) return TRUE;
+		if (!$this->db->query("UPDATE weibo SET praiseCount=praiseCount-1 WHERE id=?",$id)) return FALSE;
+		return $this->db->where(['uid'=>UID,'wid'=>$id])->delete('praise');
 	}
 	
 	function _dealData(&$data) {
