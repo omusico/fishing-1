@@ -57,8 +57,19 @@ class Place extends CI_Controller {
 		$flag?ajax():busy();
 	}
 	
+	function scoreDetail() {
+		$id=$this->input->post('id');
+		if (!$id) errInput();
+		$data=$this->m->scoreDetail($id);
+		$data?ajax(0,'',$data):ajax(2002,'评价不存在');
+	}
+	
 	function getScore() {
+		$id=$this->input->post('id');
+		if (!$id) errInput();
+		$input=['id'=>$id,'page'=>$this->input->post('page',FALSE,0),'count'=>$this->input->post('count',FALSE,20)];
 		$this->load->model('mplace','m');
-		
+		$data=$this->m->commentList($input);
+		$data?ajax(0,'',$data):ajax(2001,'钓点不存在');
 	}
 }

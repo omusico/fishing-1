@@ -89,11 +89,11 @@ class CI_Input {
 	 * @param	bool
 	 * @return	string
 	 */
-	function _fetch_from_array(&$array, $index = '', $xss_clean = FALSE)
+	function _fetch_from_array(&$array, $index = '', $xss_clean = FALSE,$default=FALSE)
 	{
 		if ( ! isset($array[$index]))
 		{
-			return FALSE;
+			return $default;
 		}
 
 		if ($xss_clean === TRUE)
@@ -142,7 +142,7 @@ class CI_Input {
 	* @param	bool
 	* @return	string
 	*/
-	function post($index = NULL, $xss_clean = FALSE)
+	function post($index = NULL, $xss_clean = FALSE,$default=FALSE)
 	{
 		// Check if a field has been provided
 		if ($index === NULL AND ! empty($_POST))
@@ -157,15 +157,15 @@ class CI_Input {
 			return $post;
 		}
 		if (is_array($index)){
-            $post = array();
-            foreach ($index as $key)
-            {
-                $post[$key] = $this->_fetch_from_array($_POST, $key, $xss_clean);
-                if ($post[$key]===false) return false;
-            }
-            return $post;
-        }
-		return $this->_fetch_from_array($_POST, $index, $xss_clean);
+			$post = array();
+			foreach ($index as $key)
+			{
+				$post[$key] = $this->_fetch_from_array($_POST, $key, $xss_clean);
+				if ($post[$key]===false) return false;
+			}
+			return $post;
+		}
+		return $this->_fetch_from_array($_POST, $index, $xss_clean,$default);
 	}
 
 

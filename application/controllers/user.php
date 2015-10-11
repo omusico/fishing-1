@@ -8,7 +8,8 @@ class User extends CI_Controller {
 	
 	//注册
 	function register(){
-		$data=$this->db->create('user');
+		$data=$this->input->post(['tel','code','password']);
+		if (!$data) errInput();
 		if (!$this->m->checkTel($data['tel']))
 			ajax(1002, '该手机号已被注册!');
 		$this->load->helper('mob');
@@ -18,7 +19,7 @@ class User extends CI_Controller {
 					'password'=>md5(md5($data['password']).'fish')]);
 			$flag ?ajax(0, '验证码正确，注册成功!') : busy();
 		}else {
-			$response==468?ajax(1004, '验证码错误!'):ajax(1, '验证码平台出错!'.$response);
+			$response==520?ajax(1004, '验证码错误!'):ajax(1, '验证码平台出错!'.$response);
 		}
 	}
 	
@@ -63,7 +64,7 @@ class User extends CI_Controller {
 		if ($response === true) {
 			$this->db->where('id',$token['id'])->update('user',['tel',$data['tel']])?ajax(0, '验证码正确，注册成功!') : ajax(0, '服务器繁忙，请重试！');
 		}else {
-			$response==468?ajax(1004, '验证码错误!'):ajax(1, '验证码平台出错!'.$response);
+			$response==520?ajax(1004, '验证码错误!'):ajax(1, '验证码平台出错!'.$response);
 		}
 	}
 	
