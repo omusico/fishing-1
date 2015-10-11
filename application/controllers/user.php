@@ -40,8 +40,8 @@ class User extends CI_Controller {
 		$data=$this->db->find('user', $token['id'],'id','token,password');
 		if (!empty($data)){
 			if ($data['token']!=$token['token']) noRights();
-			if ($data['password']!=md5(md5(I('post.oldpwd')).'fish')) ajax(1003,'原密码错误！');
-			$flag=$this->db->where('id',$token['id'])->update(['password'=>md5(md5(I('post.newpwd')).'fish')]);
+			if ($data['password']!=md5(md5($this->input->post('oldpwd')).'fish')) ajax(1003,'原密码错误！');
+			$flag=$this->db->where('id',$token['id'])->update(['password'=>md5(md5($this->input->post('newpwd')).'fish')]);
 			if ($flag!==false) ajax(0, '密码修改成功!');
 			else busy();
 		}else ajax(1001,'此用户不存在！');

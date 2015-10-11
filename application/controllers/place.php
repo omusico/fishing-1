@@ -10,7 +10,11 @@ class Place extends CI_Controller {
 		$data['picture']=gzcompress($data['picture']);
 		$data['uid']=UID;
 		$data['time']=time();
-		$this->db->insert('place',$data)?ajax():busy();
+		if (isset($data['id'])){
+			$data['state']=0;
+			$flag=$this->db->update('place',$data);
+			$flag===FALSE?busy():ajax();
+		}else $this->db->insert('place',$data)?ajax():busy();
 	}
 	
 	function getPlace() {
