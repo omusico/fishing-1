@@ -2057,7 +2057,7 @@ class CI_DB_active_record extends CI_DB_driver {
 
 	public function load_cache($table)
 	{
-		if (!array_key_exists($this->small_cache,$table))
+		if (!array_key_exists($table,$this->small_cache))
 			$this->small_cache[$table]=json_decode(file_get_contents(APPPATH.'Runtime/cache/'.$table.'.json'),TRUE);
 	}
 

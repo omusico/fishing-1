@@ -42,7 +42,11 @@ class Mweibo extends CI_Model {
 		}
 		$data=$this->db->select('*,(SELECT avatar FROM user WHERE id=weibo.authorId) authorAvatar,(SELECT name FROM user WHERE id=weibo.authorId) authorName')->get('weibo')->result_array();
 		array_walk($data, [$this,'_dealData']);
-		return $this->_dealData($data);
+		return $data;
+	}
+	
+	function praise() {
+		;
 	}
 	
 	function _dealData(&$data) {
