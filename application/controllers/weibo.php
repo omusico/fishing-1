@@ -12,7 +12,7 @@ class Weibo extends CI_Controller {
 		$data=$this->input->post(['address','content','images']);
 		if (!$data) errInput();
 		$data['images']=gzcompress($data['images']);
-		$data['author']=UID;
+		$data['authorId']=UID;
 		$data['time']=time();
 		$flag=$this->db->insert('weibo',$data);
 		$flag?ajax():busy();

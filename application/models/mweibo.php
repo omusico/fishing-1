@@ -25,10 +25,15 @@ class Mweibo extends CI_Model {
 	}
 	
 	function getList($uid,$limit) {
-		$this->db->limit($limit['page']*$limit['count'],$limit['count'])->order_by('id','desc');
+		$this->db->limit($limit['page']*$limit['count'],$limit['count']);
 		switch ($limit['type']){
-			case 1:
+			case 0:$this->db->order_by('visitCount desc,id desc');
 				break;
+			case 1:
+				$this->load->model('muser','user');
+				if (!$this->user->check()) noRights();
+				$this->db->where("authorId IN (SELECT toId FROM attention WHERE fromId=?)",UID,FALSE)->order_by('id desc');
+				break
 		}
 		$data=$this->db->select('*,(SELECT avatar FROM user WHERE id=weibo.authorId) authorAvatar,(SELECT name FROM user WHERE id=weibo.authorId) authorName')->get('weibo');
 		return $this->_dealData($data);
