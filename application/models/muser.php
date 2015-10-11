@@ -2,6 +2,7 @@
 
 class Muser extends CI_Model {
 	function checkTel($tel) {
+		if (!$tel||!is_numeric($tel)) return FALSE;
 		$res=$this->db->find('user',$tel,'tel');
 		if (empty($res))
 			return TRUE;

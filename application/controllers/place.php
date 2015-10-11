@@ -64,12 +64,12 @@ class Place extends CI_Controller {
 		$data?ajax(0,'',$data):ajax(2002,'评价不存在');
 	}
 	
-	function getScore() {
+	function scoreList() {
 		$id=$this->input->post('id');
 		if (!$id) errInput();
 		$input=['id'=>$id,'page'=>$this->input->post('page',FALSE,0),'count'=>$this->input->post('count',FALSE,20)];
 		$this->load->model('mplace','m');
-		$data=$this->m->commentList($input);
+		$data=$this->m->scoreList($input);
 		$data?ajax(0,'',$data):ajax(2001,'钓点不存在');
 	}
 }
