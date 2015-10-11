@@ -1,5 +1,4 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
-
 class Place extends CI_Controller {
 	function add() {
 		$this->load->model('muser','user');
@@ -19,10 +18,7 @@ class Place extends CI_Controller {
 	
 	function getPlace() {
 		$time=$this->input->post('time',FALSE,0);
-		$data=$this->db->query("SELECT id,name,picture,address,score,cost,costType,fishType,poolType,serviceType,lat,lng,tel FROM place WHERE time>? AND state=1",$time)->result_array();
-		foreach ($data as $key => $value) {
-			$data[$key]['picture']=json_decode(gzuncompress($data[$key]['picture']),TRUE);
-		}
+		$data=$this->db->query("SELECT id,name,preview,address,score,cost,costType,fishType,poolType,serviceType,lat,lng,tel FROM place WHERE time>? AND state=1",$time)->result_array();
 		ajax(0,'ok',$data);
 	}
 	
