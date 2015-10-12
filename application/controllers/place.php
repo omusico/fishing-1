@@ -4,16 +4,18 @@ class Place extends CI_Controller {
 		$this->load->model('muser','user');
 		if (!$this->user->check()) noRights();
 		$data=$this->db->create('place');
-		if (isset($data['state']))//有审核状态，直接干掉
+		if (isset($data['state'])||!isset($data['id'])||!is_numeric($data['id']))//有审核状态，直接干掉
 			attack();
 		$data['picture']=gzcompress($data['picture']);
 		$data['uid']=UID;
 		$data['time']=time();
-		if (isset($data['id'])){
+		if ($data['id']!==0){
 			$data['state']=0;
 			$flag=$this->db->update('place',$data);
 			$flag===FALSE?busy():ajax();
-		}else $this->db->insert('place',$data)?ajax():busy();
+		}
+		unset($data['id']);
+		$this->db->insert('place',$data)?ajax():busy();
 	}
 	
 	function getPlace() {
