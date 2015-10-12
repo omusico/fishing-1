@@ -18,7 +18,7 @@ class Place extends CI_Controller {
 	
 	function getPlace() {
 		$time=$this->input->post('time',FALSE,0);
-		$data=$this->db->query("SELECT id,name,preview,address,score,cost,costType,fishType,poolType,serviceType,lat,lng,tel FROM place WHERE time>? AND state=1",$time)->result_array();
+		$data=$this->db->query("SELECT id,name,preview,briefAddr,score,cost,costType,fishType,poolType,serviceType,lat,lng,tel FROM place WHERE unix_timestamp(time)>? AND state=1",$time)->result_array();
 		ajax(0,'ok',$data);
 	}
 	
@@ -31,6 +31,29 @@ class Place extends CI_Controller {
 		if ($this->user->check())
 			$data['collectStatus']=$this->db->where(['pid'=>$id,'uid'=>UID])->get('collection')->num_rows();
 		ajax(0,'',$data);
+	}
+	
+	function myCollect() {
+		$this->load->model('muser','user');
+		$this->user->check() OR noRights();
+		$data=$this->db->query("SELECT id,name,preview,briefAddr,score,cost,costType,fishType,poolType,serviceType,lat,lng,tel FROM place WHERE id in (SELECT pid FROM collection WHERE uid=?)",UID)->result_array();
+		ajax(0,'ok',$data);
+	}
+	
+	function collect() {
+		$this->load->model('muser','user');
+		$this->user->check() OR noRights();
+		$id=$this->input->post('id') OR errInput();
+		$this->db->insert('collection',['pid'=>$id,'uid'=>UID]);
+		ajax();
+	}
+	
+	function unCollect() {
+		$this->load->model('muser','user');
+		$this->user->check() OR noRights();
+		$id=$this->input->post('id') OR errInput();
+		$this->db->where(['pid'=>$id,'uid'=>UID])->delete('collection');
+		ajax();
 	}
 	
 	function score() {
