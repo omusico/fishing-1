@@ -48,4 +48,18 @@ class Muser extends CI_Model {
 		unset($result['password']);unset($result['tel']);
 		return $result;
 	}
+	
+	function nearby($input) {
+		$this->db->select('id,name,avatar,sign,lat,lng')
+			->where(["addrTime>"=>time()-1296000,'id!='=>UID],NULL,FALSE)
+			->where("id NOT IN (SELECT toId FROM attention WHERE fromId=".UID.")",NULL,FALSE)
+			->order_by("sqrt(lat-$input[lat])+sqrt((lng-$input[lng])*cos((lat+$input[lat])/2))",'desc')
+			->limit($input['count'],$input['page']*$input['count']);
+		$data=$this->db->get('user')->result_array();
+		$this->load->helper('distance');
+		foreach ($data as $key => $value) {
+			$data[$key]['distance']=GetDistance($data[$key]['lat'],$data[$key]['lng'],$input['lat'],$input['lng']);
+		}
+		return $data;
+	}
 }

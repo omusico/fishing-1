@@ -75,6 +75,32 @@ class User extends CI_Controller {
 		$this->db->where("id",UID)->update('user',$data)?ajax():busy();
 	}
 	
+	function updateAddr() {
+		$this->m->check() OR noRights();
+		$data=$this->input->post(['lat','lng']) OR errInput();
+		$data['addrTime']=time();
+		$this->db->where('id',UID)->update('user',$data);
+		ajax();
+	}
+	
+	function getNearby() {
+		$this->m->check() OR noRights();
+		$input=$this->input->post(['lat','lng']) OR errInput();
+		$input['page']=$this->input->post('page',FALSE,0);
+		$input['count']=$this->input->post('count',FALSE,10);
+		$res=$this->m->nearby($input);
+		ajax(0,'',$res);
+	}
+	
+	function findUser() {
+		$this->m->check() OR noRights();
+		$word=$this->input->post('key') OR errInput();
+		$this->db->select('id,name,avatar,sign');
+		(is_numeric($word)&&strlen($word)==11)?
+		$this->db->where('tel',$word):$this->db->like('name',$word);//根据电话搜索或者根据关键字搜索
+		ajax(0,'',$this->db->get('user')->result_array());
+	}
+	
 	//获取用户信息
 	function getUserinfo(){
 		$id=$this->input->post('id');

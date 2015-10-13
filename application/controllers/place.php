@@ -19,7 +19,7 @@ class Place extends CI_Controller {
 	
 	function getPlace() {
 		$time=$this->input->post('time',FALSE,0);
-		$data=$this->db->query("SELECT id,name,preview,briefAddr,score,cost,costType,fishType,poolType,serviceType,lat,lng,tel FROM place WHERE unix_timestamp(time)>? AND state=1",$time)->result_array();
+		$data=$this->db->query("SELECT id,name,preview,briefAddr,score,cost,costType,fishType,poolType,serviceType,lat,lng,tel,state FROM place WHERE unix_timestamp(time)>? AND state=1",$time)->result_array();
 		ajax(0,'ok',$data);
 	}
 	

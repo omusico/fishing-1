@@ -37,4 +37,20 @@ class Common extends CI_Controller {
 			}else $this->load->view('login');
 		}
 	}
+	
+	function test() {
+		$this->db->where('id <',6)->update('user',['addrTime'=>time()]);
+// 		$data=array('picture'=>gzcompress('["http://t11.baidu.com/it/u=1889789971,2360758735&fm=58"]'),
+// 				'preview'=>'http://t11.baidu.com/it/u=1889789971,2360758735&fm=58',
+// 				'time'=>time(),'address'=>'重庆磁器口','fishType'=>'逗鱼','serviceType'=>'1,2','content'=>'test','tel'=>'123','state'=>1);
+// 		$res=array();
+// 		for ($i = 0; $i < 20; $i++) {
+// 			$data['lat']=28+rand()*3;$data['lng']=108+rand()*3;
+// 			$data['name']="No.$i";
+// 			$data['costType']=rand(0,1);
+// 			$data['cost']=$data['costType']?rand(100,500):0;
+// 			$res[]=$data;
+// 		}
+// 		$this->db->insert_batch('place',$res);
+	}
 }

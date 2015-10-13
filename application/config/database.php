@@ -3,7 +3,7 @@
 $active_group = 'default';
 $active_record = TRUE;
 
-$db['default']['hostname'] = '103.238.226.48:3307';
+$db['default']['hostname'] = '120.27.55.225';
 $db['default']['username'] = 'fishing';
 $db['default']['password'] = 'whoknows';
 $db['default']['database'] = 'fishing';
