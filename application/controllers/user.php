@@ -95,7 +95,7 @@ class User extends CI_Controller {
 	function findUser() {
 		$this->m->check() OR noRights();
 		$word=$this->input->post('key') OR errInput();
-		$this->db->select('id,name,avatar,sign');
+		$this->db->select('id,name,avatar,sign,fans,cared');
 		(is_numeric($word)&&strlen($word)==11)?
 		$this->db->where('tel',$word):$this->db->like('name',$word);//根据电话搜索或者根据关键字搜索
 		ajax(0,'',$this->db->get('user')->result_array());
@@ -104,26 +104,37 @@ class User extends CI_Controller {
 	//获取用户信息
 	function getUserinfo(){
 		$id=$this->input->post('id');
-		$res=$this->db->find('user', $id,'id','id,name,address,age,skill,gender,avatar,sign');
-		empty($res)?ajax(1001,'无此用户'):ajax(0,'',$res);
+		$res=$this->db->find('user', $id,'id','id,name,address,age,skill,gender,avatar,sign,fans,cared');
+		$res OR ajax(1001,'无此用户');
+		if (!$this->m->check())
+			$res['relation']=$this->db->where(['fromId'=>UID,'toId'=>$id])->get('attention')->num_rows();
+		ajax(0,'',$res);
 	}
 	
 	function getMyinfo(){
 		if (!$this->m->check()) noRights();
-		$res=$this->db->find('user', UID,'id','id,name,address,age,skill,gender,avatar,sign,token,rongToken');
+		$res=$this->db->find('user', UID,'id','id,name,address,age,skill,gender,avatar,sign,token,rongToken,fans,cared');
 		ajax(0,'',$res);
 	}
 	
 	function attend()
 	{
 		if (!$this->m->check()) noRights();
-		$this->db->insert('attention',['fromid'=>UID,'toId'=>$this->input->post('id')]);
+		$id=$this->input->post('id') OR errInput();
+		$this->db->where('id',$id)->step('fans','user');
+		$this->db->affected_rows()==1 OR errInput();//此用户不存在
+		$this->db->where('id',UID)->step('cared');
+		$this->db->insert('attention',['fromid'=>UID,'toId'=>$id]);
 		ajax();
 	}
 	
 	function unAttend()
 	{
 		if (!$this->m->check()) noRights();
+		$id=$this->input->post('id') OR errInput();
+		$this->db->where('id',$id)->step('fans','user',FALSE);
+		$this->db->affected_rows()==1 OR errInput();//此用户不存在
+		$this->db->where('id',UID)->step('cared','',FALSE);
 		$this->db->where(['fromid'=>UID,'toId'=>$this->input->post('id')])->delete('attention');
 		ajax();
 	}
@@ -131,7 +142,18 @@ class User extends CI_Controller {
 	function myAttend()
 	{
 		if (!$this->m->check()) noRights();
-		$res=$this->db->where("id in (SELECT uid FROM attention WHERE fromid=?)",UID,FALSE)->select('id,name,avatar')->get('attention')->result_array();
+		$id=$this->input->post('id');
+		$id=$id?(int)$id:UID;
+		$res=$this->db->where("id in (SELECT toid FROM attention WHERE fromid=$id)",NULL,FALSE)->select('id,name,avatar,sign,fans,cared')->get('user')->result_array();
+		ajax(0,'',$res);
+	}
+	
+	function myFans()
+	{
+		if (!$this->m->check()) noRights();
+		$id=$this->input->post('id');
+		$id=$id?(int)$id:UID;
+		$res=$this->db->where("id in (SELECT fromid FROM attention WHERE toid=$id)",NULL,FALSE)->select('id,name,avatar,sign,fans,cared')->get('user')->result_array();
 		ajax(0,'',$res);
 	}
 }

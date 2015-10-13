@@ -2079,6 +2079,18 @@ class CI_DB_active_record extends CI_DB_driver {
 		}
 		return $res;
 	}
+	
+	/**
+	 *  setInc and setDec
+	 *
+	 * @return	effected rows
+	 */
+	function step($key,$table='',$isInc=TRUE,$num=1) {
+		if ($table!='')
+			$this->small_table=$table;
+		$num=$isInc?"+$num":"-$num";
+		return $this->set($key,$key.$num,FALSE)->update($this->small_table);
+	}
 }
 
 /* End of file DB_active_rec.php */
