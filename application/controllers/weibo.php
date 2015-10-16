@@ -9,8 +9,8 @@ class Weibo extends CI_Controller {
 	function add() {
 		$this->load->model('muser','user');
 		if (!$this->user->check()) noRights();
-		$data=$this->input->post(['address','content','images']);
-		if (!$data) errInput();
+		$data=$this->input->post(['address','content','images','lat','lng']);
+		$data OR errInput();
 		$data['images']=gzcompress($data['images']);
 		$data['authorId']=UID;
 		$data['time']=time();

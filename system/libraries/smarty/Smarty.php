@@ -740,30 +740,24 @@ class Smarty extends Smarty_Internal_TemplateBase
      */
     public $_is_file_cache = array();
 
-    /**#@-*/
-
     /**
      * Initialize new Smarty object
      */
-    public function __construct($configs=array(
-    		'template_dir'=>APPPATH.'views/',
-    		'config_dir'=>'',
-    		'compile_dir'=>APPPATH.'Runtime/compile/',
-    		'cache_dir'=>APPPATH.'Runtime/cache/'))
+    public function __construct()
     {
         if (is_callable('mb_internal_encoding')) {
             mb_internal_encoding(Smarty::$_CHARSET);
         }
         $this->start_time = microtime(true);
         // check default dirs for overloading
-        $this->setTemplateDir($configs['template_dir']);
+        $this->setTemplateDir(APPPATH.'views/');
         if ($this->config_dir[0] !== './configs/' || isset($this->config_dir[1])) {
             $this->setConfigDir($this->config_dir);
         }
         unset(self::$_muted_directories['./templates_c/']);
-        $this->setCompileDir($configs['compile_dir']);
+        $this->setCompileDir(APPPATH.'Runtime/compile/');
         unset(self::$_muted_directories['./cache/']);
-        $this->setCacheDir($configs['cache_dir']);
+        $this->setCacheDir(APPPATH.'Runtime/cache/');
         if (isset($this->plugins_dir)) {
             $this->setPluginsDir($this->plugins_dir);
         } else {

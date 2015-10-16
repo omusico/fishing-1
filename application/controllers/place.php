@@ -28,9 +28,10 @@ class Place extends CI_Controller {
 		$data=$this->db->find('place', $id);
 		if (empty($data)) ajax(2001,'没有数据');
 		$data['picture']=json_decode(gzuncompress($data['picture']),TRUE);
+		$data['evaluateCount']=$this->db->where('pid',$id)->count_all_results('score');
 		$this->load->model('muser','user');
 		if ($this->user->check())
-			$data['collectStatus']=$this->db->where(['pid'=>$id,'uid'=>UID])->get('collection')->num_rows();
+			$data['collectStatus']=$this->db->where(['pid'=>$id,'uid'=>UID])->get('collection')->num_rows()==1?TRUE:FALSE;
 		ajax(0,'',$data);
 	}
 	
@@ -81,12 +82,14 @@ class Place extends CI_Controller {
 		$data['uid']=UID;
 		$data['time']=time();
 		$flag=$this->db->insert('scomment',$data);
+		$this->db->where('id',$data['sid'])->step('commentCount','score');
 		$flag?ajax():busy();
 	}
 	
 	function scoreDetail() {
 		$id=$this->input->post('id');
 		if (!$id) errInput();
+		$this->load->model('mplace','m');
 		$data=$this->m->scoreDetail($id);
 		$data?ajax(0,'',$data):ajax(2002,'评价不存在');
 	}
@@ -97,6 +100,15 @@ class Place extends CI_Controller {
 		$input=['id'=>$id,'page'=>$this->input->post('page',FALSE,0),'count'=>$this->input->post('count',FALSE,20)];
 		$this->load->model('mplace','m');
 		$data=$this->m->scoreList($input);
+		ajax(0,'',$data);
+	}
+	
+	function myScoreList() {
+		$this->load->model('muser','user');
+		if (!$this->user->check()) noRights();
+		$input=['page'=>$this->input->post('page',FALSE,0),'count'=>$this->input->post('count',FALSE,20)];
+		$this->load->model('mplace','m');
+		$data=$this->m->myScoreList($input);
 		ajax(0,'',$data);
 	}
 }

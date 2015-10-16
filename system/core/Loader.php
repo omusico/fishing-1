@@ -417,7 +417,7 @@ class CI_Loader {
 		$CI =& get_instance();
 		if (!empty($vars))
 			$CI->smarty->assign($vars);
-		$CI->smarty->display($view);
+		$CI->smarty->display($view.'.html');
 	}
 
 	// --------------------------------------------------------------------

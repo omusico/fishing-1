@@ -31,10 +31,10 @@ class Mweibo extends CI_Model {
 			case 0:$this->db->order_by('visitCount desc,id desc');
 				break;
 			case 1:
-				$this->db->where("authorId IN (SELECT toId FROM attention WHERE fromId=?)",UID,FALSE)->order_by('id desc');
+				$this->db->where("authorId IN (SELECT toId FROM attention WHERE fromId=".UID.")",null,FALSE)->order_by('id desc');
 				break;
 			case 2:
-				$this->db->where("time>?",time()-1296000,FALSE)->order_by("sqrt(lat-$input[lat])+sqrt((lng-$input[lng])*cos((lat+$input[lat])/2))",'desc');
+				$this->db->where("time >",time()-1296000,FALSE)->order_by("sqrt(lat-$limit[lat])+sqrt((lng-$limit[lng])*cos((lat+$limit[lat])/2))",'desc');
 				break;
 			case 3:$this->db->where('authorId',UID);
 				break;
