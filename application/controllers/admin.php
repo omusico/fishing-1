@@ -12,7 +12,25 @@ class admin extends CI_Controller {
 	}
 	
 	function index() {
-		
+		$this->load->view('index');
+	}
+	
+	function placeList() {
+		$data=$this->db->select('id,(SELECT name FROM user WHERE id=score.uid) user,name,cost,briefAddr,time')
+			->where('state',0)->get('place')->result_array();
+		ajax(0,'',$data);
+	}
+	
+	function placeItem($id) {
+		if ($state=$this->input->post('state')){
+			$this->db->where('id',$id)->update('place',['state'=>$state]);
+			ajax();
+		}else {
+			$data=$this->db->find('place', $id);
+			$data OR die('钓点不存在');
+			$data['picture']=json_decode(gzuncompress($data['picture']),TRUE);
+			$this->load->view('placeItem',$data);
+		}
 	}
 	
 	function qiniuToken(){
@@ -21,6 +39,8 @@ class admin extends CI_Controller {
 	}
 	
 	function newVersion() {
-		$this->db->insert('version',$this->input->post(NULL,true))?ajax():busy();
+		if ($data=$this->input->post(NULL,true))
+			$this->db->insert('version',$data)?ajax():busy();
+		else $this->load->view('version');
 	}
 }

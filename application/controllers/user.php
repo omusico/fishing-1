@@ -47,6 +47,20 @@ class User extends CI_Controller {
 		}else ajax(1001,'此用户不存在！');
 	}
 	
+	function resetPass() {
+		$data=$this->input->post(['tel','code','password']);
+		$data OR errInput();
+		if ($this->m->checkTel($data['tel']))
+			ajax(1001,'此用户不存在！');
+		$this->load->helper('mob');
+		$response =mobValidate($data['tel'], $data['code']);
+		if ($response === true){
+			$this->db->where('tel',$data['tel'])->update('user',['password'=>md5(md5($data['password']).'fish')]) OR busy();
+		}else {
+			$response==520?ajax(1004, '验证码错误!'):ajax(1, '验证码平台出错!'.$response);
+		}
+	}
+	
 	function bindTel(){
 		$data=$this->input->post(['tel','code','password']);
 		if (!$data)

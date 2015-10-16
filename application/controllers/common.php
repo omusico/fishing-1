@@ -29,7 +29,7 @@ class Common extends CI_Controller {
 		else{
 			$data=$this->input->post(['user','pwd']);
 			if ($data){
-				if ($data['user']=='small'&&md5($data['pwd'])){
+				if ($data['user']=='small'&&md5($data['pwd'])=='1a833da63a6b7e20098dae06d06602e1'){
 					$this->load->library('session');
 					$this->session->set_userdata('admin','ok');
 					ajax(0,'/admin/');
