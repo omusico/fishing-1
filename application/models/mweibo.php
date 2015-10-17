@@ -36,7 +36,7 @@ class Mweibo extends CI_Model {
 			case 2:
 				$this->db->where("time >",time()-1296000,FALSE)->order_by("sqrt(lat-$limit[lat])+sqrt((lng-$limit[lng])*cos((lat+$limit[lat])/2))",'desc');
 				break;
-			case 3:$this->db->where('authorId',UID);
+			case 3:$this->db->where('authorId',UID)->order_by('id desc');
 				break;
 			default:errInput();
 		}
@@ -65,7 +65,7 @@ class Mweibo extends CI_Model {
 		$data['commentCount']=$this->db->where('wid',$data['id'])->count_all_results('wcomment');
 		$this->load->model('muser','user');
 		if (defined('UID')||$this->user->check())
-			$data['praiseStatus']=$this->db->where(['wid'=>$data['id'],'uid'=>UID])->get('praise')->num_rows();
+			$data['praiseStatus']=$this->db->where(['wid'=>$data['id'],'uid'=>UID])->get('praise')->num_rows()==1;
 		$data['praiseMember']=$this->db->query("SELECT id,name,sign,avatar FROM user WHERE id IN (SELECT uid FROM (SELECT uid FROM praise WHERE wid=? LIMIT 6 ORDER BY id desc) as t)",$data['id'])->result_array();
 		return $data;
 	}

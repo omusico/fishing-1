@@ -52,7 +52,6 @@ class Muser extends CI_Model {
 	function nearby($input) {
 		$this->db->select('id,name,avatar,sign,lat,lng,fans,cared')
 			->where(["addrTime>"=>time()-1296000,'id!='=>UID],NULL,FALSE)
-			->where("id NOT IN (SELECT toId FROM attention WHERE fromId=".UID.")",NULL,FALSE)
 			->order_by("sqrt(lat-$input[lat])+sqrt((lng-$input[lng])*cos((lat+$input[lat])/2))",'desc')
 			->limit($input['count'],$input['page']*$input['count']);
 		$data=$this->db->get('user')->result_array();

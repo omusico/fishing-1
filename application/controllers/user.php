@@ -91,7 +91,7 @@ class User extends CI_Controller {
 	
 	function updateAddr() {
 		$this->m->check() OR noRights();
-		$data=$this->input->post(['lat','lng']) OR errInput();
+		$data=$this->input->post(['lat','lng','location']) OR errInput();
 		$data['addrTime']=time();
 		$this->db->where('id',UID)->update('user',$data);
 		ajax();
@@ -120,7 +120,7 @@ class User extends CI_Controller {
 		$id=$this->input->post('id');
 		$res=$this->db->find('user', $id,'id','id,name,address,age,skill,gender,avatar,sign,fans,cared');
 		$res OR ajax(1001,'无此用户');
-		if (!$this->m->check())
+		if ($this->m->check())
 			$res['relation']=$this->db->where(['fromId'=>UID,'toId'=>$id])->get('attention')->num_rows();
 		ajax(0,'',$res);
 	}
