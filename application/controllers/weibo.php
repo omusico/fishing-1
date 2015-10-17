@@ -73,10 +73,9 @@ class Weibo extends CI_Controller {
 		ajax(0,'',$this->m->getList($input));
 	}
 	
-	function getListMy() {
+	function getList() {
 		$this->load->model('muser','user');
-		if (!$this->user->check()) noRights();
-		$input=['type'=>3,'page'=>$this->input->post('page',FALSE,0),'count'=>$this->input->post('count',FALSE,20)];
+		$input=['type'=>3,'page'=>$this->input->post('page',FALSE,0),'count'=>$this->input->post('count',FALSE,20),'id'=>$this->input->post('id',FALSE,0)];
 		ajax(0,'',$this->m->getList($input));
 	}
 	

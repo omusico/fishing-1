@@ -32,21 +32,8 @@ class Muser extends CI_Model {
 				$result['rongToken']=$token['code'];
 			else ajax(2,'融云平台出错！'.$token['code']);
 		}
-		$result['blogCount']=$this->db->where('authorId',$result['id'])->count_all_results('weibo');
-		$result['attentionCount']=$this->db->where('fromId',$result['id'])->count_all_results('attention');
-		$result['fansCount']=$this->db->where('toId',$result['id'])->count_all_results('attention');
-		$weibo=$this->db->query("SELECT * FROM weibo WHERE authorId=? ORDER BY id desc LIMIT 3",$result['id'])->result_array();
-		$result['seed']=array();
-		foreach ($weibo as $value) {
-			$value['images']=json_decode(gzuncompress($value['images']),TRUE);
-			$value['authorAvatar']=$result['avatar'];
-			$value['authorName']=$result['name'];
-			$value['praiseStatus']=$this->db->query("SELECT * FROM praise WHERE uid=$result[id] AND wid=$value[id]")->num_rows();
-			$result['seed'][]=$value;
-		}
 		$this->db->where('id',$result['id'])->update('user',['token'=>$result['token'],'type'=>0,'rongToken'=>$result['rongToken']]);
-		unset($result['password']);unset($result['tel']);
-		return $result;
+		return $this->getInfo($result);
 	}
 	
 	function nearby($input) {
@@ -60,5 +47,22 @@ class Muser extends CI_Model {
 			$data[$key]['distance']=GetDistance($data[$key]['lat'],$data[$key]['lng'],$input['lat'],$input['lng']);
 		}
 		return $data;
+	}
+	
+	function getInfo($result) {
+		$result['blogCount']=$this->db->where('authorId',$result['id'])->count_all_results('weibo');
+		$result['attentionCount']=$this->db->where('fromId',$result['id'])->count_all_results('attention');
+		$result['fansCount']=$this->db->where('toId',$result['id'])->count_all_results('attention');
+		$weibo=$this->db->query("SELECT * FROM weibo WHERE authorId=? ORDER BY id desc LIMIT 3",$result['id'])->result_array();
+		$result['seed']=array();
+		foreach ($weibo as $value) {
+			$value['images']=json_decode(gzuncompress($value['images']),TRUE);
+			$value['authorAvatar']=$result['avatar'];
+			$value['authorName']=$result['name'];
+			$value['praiseStatus']=$this->db->query("SELECT * FROM praise WHERE uid=$id AND wid=$value[id]")->num_rows()==1;
+			$result['seed'][]=$value;
+		}
+		unset($result['password']);unset($result['tel']);unset($result['location']);
+		return $result;
 	}
 }

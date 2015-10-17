@@ -47,6 +47,13 @@ class User extends CI_Controller {
 		}else ajax(1001,'此用户不存在！');
 	}
 	
+	function modBg(){
+		if (!$this->m->check()) noRights();
+		$bg=$this->input->post('bg');
+		$bg OR errInput();
+		$this->db->where("id",UID)->update('user',['bg'=>$bg])?ajax():busy();
+	}
+	
 	function resetPass() {
 		$data=$this->input->post(['tel','code','password']);
 		$data OR errInput();
@@ -118,17 +125,18 @@ class User extends CI_Controller {
 	//获取用户信息
 	function getUserinfo(){
 		$id=$this->input->post('id');
-		$res=$this->db->find('user', $id,'id','id,name,address,age,skill,gender,avatar,sign,fans,cared');
+		$res=$this->db->find('user', $id);
 		$res OR ajax(1001,'无此用户');
 		if ($this->m->check())
-			$res['relation']=$this->db->where(['fromId'=>UID,'toId'=>$id])->get('attention')->num_rows();
-		ajax(0,'',$res);
+			$res['relation']=$this->db->where(['fromId'=>UID,'toId'=>$id])->get('attention')->num_rows()==1;
+		unset($res['token']);unset($res['rongToken']);
+		ajax(0,'',$this->m->getInfo($res));
 	}
 	
 	function getMyinfo(){
 		if (!$this->m->check()) noRights();
-		$res=$this->db->find('user', UID,'id','id,name,address,age,skill,gender,avatar,sign,token,rongToken,fans,cared');
-		ajax(0,'',$res);
+		$res=$this->db->find('user', UID);
+		ajax(0,'',$this->m->getInfo($res));
 	}
 	
 	function attend()

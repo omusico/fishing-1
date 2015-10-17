@@ -7,7 +7,7 @@ class Mweibo extends CI_Model {
 			return FALSE;
 		$this->db->query("UPDATE weibo SET visitCount=visitCount+1 WHERE id=$data[id]");
 		$data['visitCount']++;
-		$comment=$this->db->field('*,(SELECT avatar FROM user WHERE id=weibo.uid) authorAvatar,(SELECT name FROM user WHERE id=weibo.authorId) uid')
+		$comment=$this->db->select('*,(SELECT avatar FROM user WHERE id=wcomment.uid) authorAvatar,(SELECT name FROM user WHERE id=wcomment.uid) authorName')
 			->where('wid',$id)->get('wcomment')->result_array();
 		$link=array();$res=array();//链表，link存每个id的地址，res是结果，指针都指向comment的数据。
 		foreach ($comment as $key=>$value) {
@@ -28,7 +28,7 @@ class Mweibo extends CI_Model {
 	function getList($limit) {
 		$this->db->limit($limit['count'],$limit['page']*$limit['count']);
 		switch ($limit['type']){
-			case 0:$this->db->order_by('visitCount desc,id desc');
+			case 0:$this->db->where("visitCount>(SELECT AVG(visitCount) FROM weibo)",NULL,FALSE)->order_by('visitCount desc,id desc');
 				break;
 			case 1:
 				$this->db->where("authorId IN (SELECT toId FROM attention WHERE fromId=".UID.")",null,FALSE)->order_by('id desc');
@@ -36,7 +36,7 @@ class Mweibo extends CI_Model {
 			case 2:
 				$this->db->where("time >",time()-1296000,FALSE)->order_by("sqrt(lat-$limit[lat])+sqrt((lng-$limit[lng])*cos((lat+$limit[lat])/2))",'desc');
 				break;
-			case 3:$this->db->where('authorId',UID)->order_by('id desc');
+			case 3:$this->db->where('authorId',$limit['id'])->order_by('id desc');
 				break;
 			default:errInput();
 		}
