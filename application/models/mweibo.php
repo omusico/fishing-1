@@ -28,7 +28,7 @@ class Mweibo extends CI_Model {
 	function getList($limit) {
 		$this->db->limit($limit['count'],$limit['page']*$limit['count']);
 		switch ($limit['type']){
-			case 0:$this->db->where("visitCount>(SELECT AVG(visitCount) FROM weibo)",NULL,FALSE)->order_by('visitCount desc,id desc');
+			case 0:$this->db->where("visitCount>=(SELECT AVG(visitCount) FROM weibo)",NULL,FALSE)->order_by('visitCount desc,id desc');
 				break;
 			case 1:
 				$this->db->where("authorId IN (SELECT toId FROM attention WHERE fromId=".UID.") OR authorId=".UID,null,FALSE)->order_by('id desc');
