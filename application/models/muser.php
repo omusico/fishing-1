@@ -59,7 +59,7 @@ class Muser extends CI_Model {
 			$value['images']=json_decode(gzuncompress($value['images']),TRUE);
 			$value['authorAvatar']=$result['avatar'];
 			$value['authorName']=$result['name'];
-			$value['praiseStatus']=$this->db->query("SELECT * FROM praise WHERE uid=$id AND wid=$value[id]")->num_rows()==1;
+			$value['praiseStatus']=$this->db->query("SELECT * FROM praise WHERE uid=$result[id] AND wid=$value[id]")->num_rows()==1;
 			$result['seed'][]=$value;
 		}
 		unset($result['password']);unset($result['tel']);unset($result['location']);

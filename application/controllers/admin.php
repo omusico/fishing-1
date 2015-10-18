@@ -16,21 +16,25 @@ class admin extends CI_Controller {
 	}
 	
 	function placeList() {
+		$input=['type'=>$this->input->post('type',NULL,0),
+				'page'=>$this->input->post('page',FALSE,0),
+				'count'=>$this->input->post('count',FALSE,10)];
 		$data=$this->db->select('id,(SELECT name FROM user WHERE id=score.uid) user,name,cost,briefAddr,time')
-			->where('state',0)->get('place')->result_array();
+			->where('state',$input['type'])->limit($input['count'],$input['count']*$input['page'])->get('place')->result_array();
 		ajax(0,'',$data);
 	}
 	
-	function placeItem($id) {
-		if ($state=$this->input->post('state')){
-			$this->db->where('id',$id)->update('place',['state'=>$state]);
-			ajax();
-		}else {
-			$data=$this->db->find('place', $id);
-			$data OR die('钓点不存在');
-			$data['picture']=json_decode(gzuncompress($data['picture']),TRUE);
-			$this->load->view('placeItem',$data);
-		}
+	function placeItem($id=0) {
+		if ($id==0||!is_numeric($id)) return $this->load->view('placeItem');
+		$data=$this->db->find('place', $id);
+		$data OR die('钓点不存在');
+		$data['picture']=json_decode(gzuncompress($data['picture']),TRUE);
+		$this->load->view('placeItem',$data);
+	}
+	
+	function placeCheck() {
+		$data=$this->input->post(['id','state']) OR errInput();
+		$this->db->query("UPDATE place SET state=? WHERE id=?",[$data['state'],$data['id']])?ajax():busy();
 	}
 	
 	function qiniuToken(){

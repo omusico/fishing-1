@@ -38,7 +38,8 @@ class Mplace extends CI_Model {
 	function myScoreList($input) {
 		$this->db->limit($input['count'],$input['count']*$input['page'])->order_by('id','desc');
 		$user=$this->db->find('user',UID,'id','avatar authorAvatar,name authorName');
-		$data=$this->db->where('uid',UID)->get('score')->result_array();
+		$data=$this->db->select('*,(SELECT name FROM place WHERE id=score.pid) placeName,(SELECT preview FROM place WHERE id=score.pid) placePreview')
+			->where('uid',UID)->get('score')->result_array();
 		$res=array();
 		foreach ($data as $value) {
 			$value['images']=json_decode(gzuncompress($value['images']),TRUE);

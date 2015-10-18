@@ -2,14 +2,22 @@
 class Place extends CI_Controller {
 	function add() {
 		$this->load->model('muser','user');
-		if (!$this->user->check()) noRights();
+		if (!$this->user->check()){
+			$this->load->library('session');
+			$this->session->userdata('admin') OR noRights();//no login,not admin
+			define('UID', 1);
+		}
 		$data=$this->db->create('place');
 		if (isset($data['state'])||!isset($data['id'])||!is_numeric($data['id']))//有审核状态，直接干掉
 			attack();
-		$data['picture']=gzcompress($data['picture']);
+		if (isset($data['picture']))
+			$data['picture']=gzcompress($data['picture']);
 		$data['uid']=UID;
 		$data['time']=time();
 		if ($data['id']!=0){
+			$uid=$this->db->find('', $data['id'],'id','uid');
+			$uid OR ajax(2001,'钓点不存在');
+			if ($uid['uid']!=UID&&UID!=1) attack();//not author,not admin
 			$data['state']=0;
 			$this->db->where('id',$data['id'])->update('place',$data)===FALSE?busy():ajax();
 		}
@@ -17,16 +25,30 @@ class Place extends CI_Controller {
 		$this->db->insert('place',$data)?ajax():busy();
 	}
 	
+	function del() {
+		$id=$this->input->post('id');
+		$this->load->model('muser','user');
+		if (!$this->user->check()){
+			$this->load->library('session');
+			$this->session->userdata('admin') OR noRights();//no login,not admin
+			define('UID', 1);
+		}
+		$uid=$this->db->find('place', $id,'id','uid');
+		$uid OR ajax(2001,'钓点不存在');
+		if ($uid['uid']!=UID&&UID!=1) attack();//not author,not admin
+		$this->db->delete('place',['id'=>$id])?ajax():busy();
+	}
+	
 	function getPlace() {
 		$time=$this->input->post('time',FALSE,0);
-		$data=$this->db->query("SELECT id,name,preview,briefAddr,score,cost,costType,fishType,poolType,serviceType,lat,lng,tel,state FROM place WHERE unix_timestamp(time)>?",$time)->result_array();
+		$data=$this->db->query("SELECT id,name,preview,briefAddr,score,cost,costType,fishType,poolType,serviceType,lat,lng,state FROM place WHERE unix_timestamp(time)>?",$time)->result_array();
 		ajax(0,'ok',$data);
 	}
 	
 	function getItem() {
 		$id=$this->input->post('id');
 		$data=$this->db->find('place', $id);
-		if (empty($data)) ajax(2001,'没有数据');
+		if (empty($data)) ajax(2001,'钓点不存在');
 		$data['picture']=json_decode(gzuncompress($data['picture']),TRUE);
 		$data['evaluateCount']=$this->db->where('pid',$id)->count_all_results('score');
 		$this->load->model('muser','user');
@@ -38,7 +60,14 @@ class Place extends CI_Controller {
 	function myCollect() {
 		$this->load->model('muser','user');
 		$this->user->check() OR noRights();
-		$data=$this->db->query("SELECT id,name,preview,briefAddr,score,cost,costType,fishType,poolType,serviceType,lat,lng,tel FROM place WHERE id in (SELECT pid FROM collection WHERE uid=?)",UID)->result_array();
+		$data=$this->db->query("SELECT id,name,preview,briefAddr,score,cost,costType,fishType,poolType,serviceType,lat,lng,state FROM place WHERE id in (SELECT pid FROM collection WHERE uid=?)",UID)->result_array();
+		ajax(0,'ok',$data);
+	}
+	
+	function myPlace() {
+		$this->load->model('muser','user');
+		$this->user->check() OR noRights();
+		$data=$this->db->query("SELECT id,name,preview,briefAddr,score,cost,costType,fishType,poolType,serviceType,lat,lng,state FROM place WHERE uid=?",UID)->result_array();
 		ajax(0,'ok',$data);
 	}
 	
