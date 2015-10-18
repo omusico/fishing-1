@@ -81,6 +81,7 @@ class Weibo extends CI_Controller {
 	
 	function getItem() {
 		$id=$this->input->post('id');
+		$id OR errInput();
 		$data=$this->m->getItem($id);
 		if ($data==FALSE) ajax(3001,'没有数据');
 		else ajax(0,'',$data);

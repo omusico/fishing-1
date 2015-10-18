@@ -1,1 +1,1 @@
-["id","name","picture","address","score","cost","costType","fishType","poolType","serviceType","content","lat","lng","tel","uid","state","time","preview","briefAddr"]
+["id","name","picture","preview","address","briefAddr","score","cost","costType","fishType","poolType","serviceType","content","lat","lng","tel","uid","state","time","area","deep","hole"]

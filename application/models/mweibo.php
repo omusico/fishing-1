@@ -8,7 +8,7 @@ class Mweibo extends CI_Model {
 		$this->db->query("UPDATE weibo SET visitCount=visitCount+1 WHERE id=$data[id]");
 		$data['visitCount']++;
 		$comment=$this->db->select('*,(SELECT avatar FROM user WHERE id=wcomment.uid) authorAvatar,(SELECT name FROM user WHERE id=wcomment.uid) authorName')
-			->where('wid',$id)->get('wcomment')->result_array();
+			->where('wid',$id)->order_by('id','desc')->get('wcomment')->result_array();
 		$link=array();$res=array();//链表，link存每个id的地址，res是结果，指针都指向comment的数据。
 		foreach ($comment as $key=>$value) {
 			$comment[$key]['child']=array();
@@ -34,7 +34,10 @@ class Mweibo extends CI_Model {
 				$this->db->where("authorId IN (SELECT toId FROM attention WHERE fromId=".UID.") OR authorId=".UID,null,FALSE)->order_by('id desc');
 				break;
 			case 2:
-				$this->db->where("time >",time()-1296000,FALSE)->order_by("pow(lat-$limit[lat],2)+pow((lng-$limit[lng])*cos((lat+$limit[lat])/2),2)",'asc');
+				$this->load->helper('distance');
+				$range=GetRange($limit,30000);
+				$this->db->where("lat BETWEEN $range[minlat] AND $range[maxlat] AND lng BETWEEN $range[minlng] AND $range[maxlng]",null,FALSE)
+					->order_by("time",'desc');
 				break;
 			case 3:$this->db->where('authorId',$limit['id'])->order_by('id desc');
 				break;
@@ -66,7 +69,8 @@ class Mweibo extends CI_Model {
 		$this->load->model('muser','user');
 		if (defined('UID')||$this->user->check())
 			$data['praiseStatus']=$this->db->where(['wid'=>$data['id'],'uid'=>UID])->get('praise')->num_rows()==1;
-		$data['praiseMember']=$this->db->query("SELECT id,name,sign,avatar FROM user WHERE id IN (SELECT uid FROM (SELECT uid FROM praise WHERE wid=? LIMIT 6) as t)",$data['id'])->result_array();
+		//SELECT id,name,sign,avatar FROM user WHERE id IN (SELECT uid FROM (SELECT uid FROM praise WHERE wid='2' order by time desc LIMIT 6) as t) 顺序不严格但效率略高
+		$data['praiseMember']=$this->db->query("SELECT id,name,sign,avatar FROM user JOIN (SELECT uid,time FROM praise WHERE wid=?) as t ON id=uid ORDER BY t.time desc LIMIT 6",$data['id'])->result_array();
 		return $data;
 	}
 }

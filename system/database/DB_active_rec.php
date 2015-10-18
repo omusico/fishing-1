@@ -2069,6 +2069,10 @@ class CI_DB_active_record extends CI_DB_driver {
 		$num=$isInc?"+$num":"-$num";
 		return $this->set($key,$key.$num,FALSE)->update($this->small_table);
 	}
+	
+	function buildSql() {
+		return $this->_compile_select();
+	}
 }
 
 /* End of file DB_active_rec.php */

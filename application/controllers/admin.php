@@ -19,7 +19,7 @@ class admin extends CI_Controller {
 		$input=['type'=>$this->input->post('type',NULL,0),
 				'page'=>$this->input->post('page',FALSE,0),
 				'count'=>$this->input->post('count',FALSE,10)];
-		$data=$this->db->select('id,(SELECT name FROM user WHERE id=score.uid) user,name,cost,briefAddr,time')
+		$data=$this->db->select('id,name,briefAddr,time')
 			->where('state',$input['type'])->limit($input['count'],$input['count']*$input['page'])->get('place')->result_array();
 		ajax(0,'',$data);
 	}

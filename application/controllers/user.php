@@ -174,6 +174,9 @@ class User extends CI_Controller {
 		$id=$this->input->post('id');
 		$id=$id?(int)$id:UID;
 		$res=$this->db->where("id in (SELECT toid FROM attention WHERE fromid=$id)",NULL,FALSE)->select('id,name,avatar,sign,fans,cared')->get('user')->result_array();
+		foreach ($res as $key => $value) {
+			$res[$key]['relation']=$this->db->where(['fromId'=>UID,'toId'=>$value['id']])->get('attention')->num_rows()==1;
+		}
 		ajax(0,'',$res);
 	}
 	
@@ -183,6 +186,9 @@ class User extends CI_Controller {
 		$id=$this->input->post('id');
 		$id=$id?(int)$id:UID;
 		$res=$this->db->where("id in (SELECT fromid FROM attention WHERE toid=$id)",NULL,FALSE)->select('id,name,avatar,sign,fans,cared')->get('user')->result_array();
+		foreach ($res as $key => $value) {
+			$res[$key]['relation']=$this->db->where(['fromId'=>UID,'toId'=>$value['id']])->get('attention')->num_rows()==1;
+		}
 		ajax(0,'',$res);
 	}
 }
