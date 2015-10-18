@@ -133,6 +133,13 @@ class User extends CI_Controller {
 		ajax(0,'',$this->m->getInfo($res));
 	}
 	
+	//获取用户头像和昵称
+	function getBriefinfo(){
+		$id=$this->input->post('id');
+		$res=$this->db->find('user', $id,'id','name,avatar');
+		$res?ajax(0,'',$res):ajax(1001,'无此用户');
+	}
+	
 	function getMyinfo(){
 		if (!$this->m->check()) noRights();
 		$res=$this->db->find('user', UID);

@@ -831,28 +831,6 @@ class CI_DB_active_record extends CI_DB_driver {
 			$direction = (in_array(strtoupper(trim($direction)), array('ASC', 'DESC'), TRUE)) ? ' '.$direction : ' ASC';
 		}
 
-
-		if (strpos($orderby, ',') !== FALSE)
-		{
-			$temp = array();
-			foreach (explode(',', $orderby) as $part)
-			{
-				$part = trim($part);
-				if ( ! in_array($part, $this->ar_aliased_tables))
-				{
-					$part = $this->_protect_identifiers(trim($part));
-				}
-
-				$temp[] = $part;
-			}
-
-			$orderby = implode(', ', $temp);
-		}
-		else if ($direction != $this->_random_keyword)
-		{
-			$orderby = $this->_protect_identifiers($orderby);
-		}
-
 		$orderby_statement = $orderby.$direction;
 
 		$this->ar_orderby[] = $orderby_statement;

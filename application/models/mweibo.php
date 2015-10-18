@@ -31,10 +31,10 @@ class Mweibo extends CI_Model {
 			case 0:$this->db->where("visitCount>(SELECT AVG(visitCount) FROM weibo)",NULL,FALSE)->order_by('visitCount desc,id desc');
 				break;
 			case 1:
-				$this->db->where("authorId IN (SELECT toId FROM attention WHERE fromId=".UID.")",null,FALSE)->order_by('id desc');
+				$this->db->where("authorId IN (SELECT toId FROM attention WHERE fromId=".UID.") OR authorId=".UID,null,FALSE)->order_by('id desc');
 				break;
 			case 2:
-				$this->db->where("time >",time()-1296000,FALSE)->order_by("sqrt(lat-$limit[lat])+sqrt((lng-$limit[lng])*cos((lat+$limit[lat])/2))",'desc');
+				$this->db->where("time >",time()-1296000,FALSE)->order_by("pow(lat-$limit[lat],2)+pow((lng-$limit[lng])*cos((lat+$limit[lat])/2),2)",'asc');
 				break;
 			case 3:$this->db->where('authorId',$limit['id'])->order_by('id desc');
 				break;
@@ -66,7 +66,7 @@ class Mweibo extends CI_Model {
 		$this->load->model('muser','user');
 		if (defined('UID')||$this->user->check())
 			$data['praiseStatus']=$this->db->where(['wid'=>$data['id'],'uid'=>UID])->get('praise')->num_rows()==1;
-		$data['praiseMember']=$this->db->query("SELECT id,name,sign,avatar FROM user WHERE id IN (SELECT uid FROM (SELECT uid FROM praise WHERE wid=? LIMIT 6 ORDER BY id desc) as t)",$data['id'])->result_array();
+		$data['praiseMember']=$this->db->query("SELECT id,name,sign,avatar FROM user WHERE id IN (SELECT uid FROM (SELECT uid FROM praise WHERE wid=? LIMIT 6) as t)",$data['id'])->result_array();
 		return $data;
 	}
 }

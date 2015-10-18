@@ -38,10 +38,6 @@ class Common extends CI_Controller {
 		}
 	}
 	
-	function smarty() {
-		$this->load->view('test',['title'=>'I am title!']);
-	}
-	
 	function test() {
 		$data=$this->db->select('id,picture')->get('place')->result_array();
 		$update=['picture'=>gzcompress('["http://t11.baidu.com/it/u=1889789971,2360758735&fm=58"]')];
