@@ -19,7 +19,7 @@ class User extends CI_Controller {
 					'password'=>md5(md5($data['password']).'fish')]);
 			$flag ?ajax(0, '验证码正确，注册成功!') : busy();
 		}else {
-			$response==520?ajax(1004, '验证码错误!'):ajax(1, '验证码平台出错!'.$response);
+			$response==468?ajax(1004, '验证码错误!'):ajax(1, '验证码平台出错!'.$response);
 		}
 	}
 	
@@ -41,9 +41,7 @@ class User extends CI_Controller {
 		if (!empty($data)){
 			if ($data['token']!=$token['token']) noRights();
 			if ($data['password']!=md5(md5($this->input->post('oldpwd')).'fish')) ajax(1003,'原密码错误！');
-			$flag=$this->db->where('id',$token['id'])->update(['password'=>md5(md5($this->input->post('newpwd')).'fish')]);
-			if ($flag!==false) ajax(0, '密码修改成功!');
-			else busy();
+			$this->db->where('id',$token['id'])->update('user',['password'=>md5(md5($this->input->post('newpwd')).'fish')])?ajax(0, '密码修改成功!'):busy();
 		}else ajax(1001,'此用户不存在！');
 	}
 	
@@ -64,7 +62,7 @@ class User extends CI_Controller {
 		if ($response === true){
 			$this->db->where('tel',$data['tel'])->update('user',['password'=>md5(md5($data['password']).'fish')]) OR busy();
 		}else {
-			$response==520?ajax(1004, '验证码错误!'):ajax(1, '验证码平台出错!'.$response);
+			$response==468?ajax(1004, '验证码错误!'):ajax(1, '验证码平台出错!'.$response);
 		}
 	}
 	
@@ -85,7 +83,7 @@ class User extends CI_Controller {
 		if ($response === true) {
 			$this->db->where('id',$token['id'])->update('user',['tel',$data['tel']])?ajax(0, '验证码正确，注册成功!') : ajax(0, '服务器繁忙，请重试！');
 		}else {
-			$response==520?ajax(1004, '验证码错误!'):ajax(1, '验证码平台出错!'.$response);
+			$response==468?ajax(1004, '验证码错误!'):ajax(1, '验证码平台出错!'.$response);
 		}
 	}
 	

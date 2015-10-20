@@ -33,6 +33,10 @@ class Weibo extends CI_Controller {
 		if (!$this->user->check()) noRights();
 		$data=$this->input->post(['fid','wid','content']);
 		if (!$data) errInput();
+		if ($data['fid']!=0){
+			$t=$this->db->where(['wid'=>$data['wid'],'id'=>$data['fid']])->get('wcomment');
+			if (!$t||$t->num_rows()!=1) attack();
+		}
 		$data['uid']=UID;
 		$data['time']=time();
 		$this->db->insert('wcomment',$data)?ajax():busy();

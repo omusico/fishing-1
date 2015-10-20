@@ -39,11 +39,12 @@ class Muser extends CI_Model {
 	function nearby($input) {
 		$this->db->select('id,name,avatar,sign,lat,lng,fans,cared')
 			->where(["addrTime>"=>time()-1296000,'id!='=>UID],NULL,FALSE)
-			->order_by("sqrt(lat-$input[lat])+sqrt((lng-$input[lng])*cos((lat+$input[lat])/2))",'desc')
+			->order_by("pow(lat-$input[lat],2)+pow((lng-$input[lng])*cos((lat+$input[lat])/2),2)",'asc')
 			->limit($input['count'],$input['page']*$input['count']);
 		$data=$this->db->get('user')->result_array();
 		$this->load->helper('distance');
 		foreach ($data as $key => $value) {
+// 			$data[$key]['value']=pow($data[$key]['lat']-$input['lat'],2)+pow(($data[$key]['lng']-$input['lng'])*cos(($data[$key]['lat']+$input['lat'])/2),2);
 			$data[$key]['distance']=GetDistance($data[$key]['lat'],$data[$key]['lng'],$input['lat'],$input['lng']);
 		}
 		return $data;

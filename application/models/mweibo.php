@@ -8,20 +8,26 @@ class Mweibo extends CI_Model {
 		$this->db->query("UPDATE weibo SET visitCount=visitCount+1 WHERE id=$data[id]");
 		$data['visitCount']++;
 		$comment=$this->db->select('*,(SELECT avatar FROM user WHERE id=wcomment.uid) authorAvatar,(SELECT name FROM user WHERE id=wcomment.uid) authorName')
-			->where('wid',$id)->order_by('id','desc')->get('wcomment')->result_array();
-		$link=array();$res=array();//链表，link存每个id的地址，res是结果，指针都指向comment的数据。
+			->where('wid',$data['id'])->get('wcomment')->result_array();//先发表的放前面
+		$link=array();$res=array();$del=false;//链表，link存每个id的地址，res是结果，指针都指向comment的数据。
 		foreach ($comment as $key=>$value) {
 			$comment[$key]['child']=array();
 			$link[$comment[$key]['id']]=&$comment[$key];
 			if ($comment[$key]['fid']==0){
 				$res[]=&$comment[$key];
 			}else {
-				if (!isset($link[$comment[$key]['fid']]))
-					$this->db->delete('wcomment',['id'=>$comment[$key]['fid']]);
+				if (!isset($link[$comment[$key]['fid']])){
+					$del=TRUE;
+					$this->db->delete('wcomment',['id'=>$comment[$key]['id']]);
+				}
 				$link[$comment[$key]['fid']]['child'][]=&$comment[$key];
 			}
 		}
 		$data['comment']=$res;
+		if ($del){
+			$data['commentCount']=$this->db->where('wid',$data['id'])->count_all_results('wcomment');
+			$this->db->where('id',$data['id'])->update('weibo',['commentCount'=>$data['commentCount']]);
+		}
 		return $this->_dealData($data);
 	}
 	

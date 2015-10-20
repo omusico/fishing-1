@@ -25,7 +25,7 @@ class admin extends CI_Controller {
 	}
 	
 	function placeItem($id=0) {
-		if ($id==0||!is_numeric($id)) return $this->load->view('placeItem');
+// 		if ($id==0||!is_numeric($id)) return $this->load->view('placeItem');
 		$data=$this->db->find('place', $id);
 		$data OR die('钓点不存在');
 		$data['picture']=json_decode(gzuncompress($data['picture']),TRUE);
