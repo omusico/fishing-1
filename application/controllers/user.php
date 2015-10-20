@@ -15,8 +15,19 @@ class User extends CI_Controller {
 		$this->load->helper('mob');
 		$response =mobValidate($data['tel'], $data['code']);
 		if ($response === true) {
+			$pics=['http://7xjdz6.com2.z0.glb.qiniucdn.com/S_F29210bdb497e132cc163ad10549de55445c6a8c121473-rHycIk_fw658.jpg',
+					'http://7xjdz6.com2.z0.glb.qiniucdn.com/S_F09abe50a71e7dfc1ea1b176a8f827a75fe6df2aa8d00-IASSny_fw658.jpg',
+					'http://7xjdz6.com2.z0.glb.qiniucdn.com/S_Fde4f5566b00fdbbee9d12046cb6aa836b7d79f89d723-bB29dD_fw658.jpg',
+					'http://7xjdz6.com2.z0.glb.qiniucdn.com/S_Ff78d88972a74fbb5f34dd768c681e1573ff963e234f36-BKYuOG_fw658.jpg',
+					'http://7xjdz6.com2.z0.glb.qiniucdn.com/S_Fc6a74619b692f286dc9d2b0dc8636bbb6a2e45971026f-iTXY8S_fw658.jpg',
+					'http://7xjdz6.com2.z0.glb.qiniucdn.com/S_Ffc1f7e1c99a0c4bb556b26ad16c6f1bf7d5d969519000-WfoOak_fw658.jpg',
+					'http://7xjdz6.com2.z0.glb.qiniucdn.com/S_Faf401a198398e4c1021c463a029e179b9ff556882c50e-i7s57t_fw658.jpg',
+					'http://7xjdz6.com2.z0.glb.qiniucdn.com/S_F6e6bc48e4f322b56d8edc3a5fd9db80fcd6e17129fe7-LHN0fm_fw658.jpg',
+					'http://7xjdz6.com2.z0.glb.qiniucdn.com/S_Fd61f5ef17ebc553a1612ea4d940d76c3e7b34fd7121ee-ewJZ63_fw658.jpg',
+					'http://cdn.t03.pic.sogou.com/3c28af542f2d49f7-8f0182a4cf50287e-917ca3bff74169a2d7f7156483662781_m.jpg',
+					'http://7xjdz6.com2.z0.glb.qiniucdn.com/S_F936e52cdda706160358cc0772431002b9cad882d82f3-Y3xOTe_fw658.jpg'];
 			$flag = $this->db->insert('user',['tel'=>$data['tel'],'token'=>uniqid('fish'),
-					'password'=>md5(md5($data['password']).'fish')]);
+					'password'=>md5(md5($data['password']).'fish'),'avatar'=>$pics[array_rand($pics)]]);
 			$flag ?ajax(0, '验证码正确，注册成功!') : busy();
 		}else {
 			$response==468?ajax(1004, '验证码错误!'):ajax(1, '验证码平台出错!'.$response);
