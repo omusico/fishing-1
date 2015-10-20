@@ -29,7 +29,7 @@ class admin extends CI_Controller {
 		$data=$this->db->find('place', $id);
 		$data OR die('钓点不存在');
 		$data['picture']=json_decode(gzuncompress($data['picture']),TRUE);
-		$this->load->view('placeItem',$data);
+		ajax(0,'',$data);
 	}
 	
 	function placeCheck() {

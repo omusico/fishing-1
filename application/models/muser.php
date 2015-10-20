@@ -50,6 +50,22 @@ class Muser extends CI_Model {
 		return $data;
 	}
 	
+	function contact($input) {
+		$tel=array();$name=[];
+		foreach ($input as $value) {
+			$tel[]=$value['phone'];
+			$name[$value['phone']]=$value['contact'];
+		}
+		$data=$this->db->select('id,name,avatar,sign,tel')->where_in('tel',$tel)->get('user')->result_array();
+		$res=[];
+		foreach ($res as $value) {
+			$value['relation']=$this->db->where(['fromId'=>UID,'toId'=>$value['id']])->get('attention')->num_rows()==1;
+			$value['contactName']=$name[$value['tel']];
+			$res[]=$value;
+		}
+		return $res;
+	}
+	
 	function getInfo($result) {
 		$result['blogCount']=$this->db->where('authorId',$result['id'])->count_all_results('weibo');
 		$result['attentionCount']=$this->db->where('fromId',$result['id'])->count_all_results('attention');

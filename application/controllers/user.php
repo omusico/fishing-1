@@ -131,6 +131,12 @@ class User extends CI_Controller {
 		ajax(0,'',$this->db->get('user')->result_array());
 	}
 	
+	function contact() {
+		$this->m->check() OR noRights();
+		$input=json_decode($this->input->post('data'),TRUE) OR errInput();
+		ajax(0,'',$this->m->contact($input));
+	}
+	
 	//获取用户信息
 	function getUserinfo(){
 		$id=$this->input->post('id');
