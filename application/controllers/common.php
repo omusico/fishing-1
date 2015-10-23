@@ -38,26 +38,39 @@ class Common extends CI_Controller {
 		}
 	}
 	
+	function reportPlace(){
+		$this->load->model('muser');
+		$this->muser->check() OR noRights();
+		$data=$this->input->post(['content','id']) OR errInput();
+		$data['uid']=UID;
+		$data['type']=0;
+		$this->db->insert('report',$data)?ajax():busy();
+	}
+	
+	function reportWeibo(){
+		$this->load->model('muser');
+		$this->muser->check() OR noRights();
+		$data=$this->input->post(['content','id']) OR errInput();
+		$data['uid']=UID;
+		$data['type']=1;
+		$this->db->insert('report',$data)?ajax():busy();
+	}
+	
+	function feedback(){
+		$this->load->model('muser');
+		$this->muser->check() OR noRights();
+		$data=$this->input->post('content',TRUE) OR errInput();
+		$this->db->insert('feedback',['content'=>$data,'uid'=>UID])?ajax():busy();
+	}
+
 	function test() {
-		$data=$this->db->select('id,picture')->get('place')->result_array();
-		$update=['picture'=>gzcompress('["http://t11.baidu.com/it/u=1889789971,2360758735&fm=58"]')];
-		foreach ($data as $value) {
-			$t=gzuncompress($value['picture']);
-			if (!$t){
-				$this->db->where('id',$value['id'])->update('place',$update);
-			}
-		}
-		// $data=array('picture'=>gzcompress('["http://t11.baidu.com/it/u=1889789971,2360758735&fm=58"]'),
-		// 		'preview'=>'http://t11.baidu.com/it/u=1889789971,2360758735&fm=58',
-		// 		'time'=>time(),'address'=>'重庆磁器口','fishType'=>'逗鱼','serviceType'=>'1,2','content'=>'test','tel'=>'123','state'=>1);
-// 		$res=array();
-// 		for ($i = 0; $i < 20; $i++) {
-// 			$data['lat']=28+rand()*3;$data['lng']=108+rand()*3;
-// 			$data['name']="No.$i";
-// 			$data['costType']=rand(0,1);
-// 			$data['cost']=$data['costType']?rand(100,500):0;
-// 			$res[]=$data;
-// 		}
-// 		$this->db->insert_batch('place',$res);
+		// $data=$this->db->select('id,picture')->get('place')->result_array();
+		// $update=['picture'=>gzcompress('["http://t11.baidu.com/it/u=1889789971,2360758735&fm=58"]')];
+		// foreach ($data as $value) {
+		// 	$t=gzuncompress($value['picture']);
+		// 	if (!$t){
+		// 		$this->db->where('id',$value['id'])->update('place',$update);
+		// 	}
+		// }
 	}
 }

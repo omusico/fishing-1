@@ -47,7 +47,7 @@ class Place extends CI_Controller {
 	
 	function getItem() {
 		$id=$this->input->post('id');
-		$data=$this->db->find('place', $id);
+		$data=$this->db->find('place', $id,'id','*,(SELECT avatar FROM user WHERE id=place.uid) authorAvatar,(SELECT name FROM user WHERE id=place.uid) authorName');
 		if (empty($data)) ajax(2001,'钓点不存在');
 		$data['picture']=json_decode(gzuncompress($data['picture']),TRUE);
 		$data['evaluateCount']=$this->db->where('pid',$id)->count_all_results('score');

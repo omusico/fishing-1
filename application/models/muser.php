@@ -51,14 +51,14 @@ class Muser extends CI_Model {
 	}
 	
 	function contact($input) {
-		$tel=array();$name=[];
+		$tel=[];$name=[];
 		foreach ($input as $value) {
 			$tel[]=$value['phone'];
 			$name[$value['phone']]=$value['contact'];
 		}
 		$data=$this->db->select('id,name,avatar,sign,tel')->where_in('tel',$tel)->get('user')->result_array();
 		$res=[];
-		foreach ($res as $value) {
+		foreach ($data as $value) {
 			$value['relation']=$this->db->where(['fromId'=>UID,'toId'=>$value['id']])->get('attention')->num_rows()==1;
 			$value['contactName']=$name[$value['tel']];
 			$res[]=$value;
