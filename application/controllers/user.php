@@ -113,6 +113,15 @@ class User extends CI_Controller {
 		ajax();
 	}
 	
+	function getNotify() {
+		$this->m->check() OR noRights();
+		$page=$this->input->post('page',FALSE,0);
+		$count=$this->input->post('count',FALSE,20);
+		$data=$this->db->where('uid='.UID.' OR uid=0',NULL,FALSE)->order_by('id','desc')
+			->get('notify',$count,$page*$count)->result_array();
+		ajax(0,'',$data);
+	}
+	
 	function getNearby() {
 		$this->m->check() OR noRights();
 		$input=$this->input->post(['lat','lng']) OR errInput();

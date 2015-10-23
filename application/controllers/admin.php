@@ -15,6 +15,21 @@ class admin extends CI_Controller {
 		$this->load->view('index');
 	}
 	
+	function temp($id=0) {
+		$data=$this->db->find('place', $id);
+		if (!$data) die('no data');
+		$show=['picture'=>gzuncompress($data['picture']),'id'=>$id];
+		$this->load->view('test',$show);
+	}
+	
+	function resetData() {
+		$res=$this->db->select('id,preview')->get('place')->result_array();
+		foreach ($res as $value) {
+			$this->db->where('id',$value['id'])->update('place',['picture'=>gzcompress("[\"$value[preview]\"]")]);
+		}
+		echo 'ok';
+	}
+	
 	function placeList() {
 		$input=['type'=>$this->input->post('type',NULL,0),
 				'page'=>$this->input->post('page',FALSE,0),
@@ -34,6 +49,11 @@ class admin extends CI_Controller {
 	
 	function placeCheck() {
 		$data=$this->input->post(['id','state']) OR errInput();
+		$res=$this->db->find('place', $data['id'],'id','uid');
+		$res OR attack();
+		if ($data['state']==1){
+			
+		}
 		$this->db->query("UPDATE place SET state=? WHERE id=?",[$data['state'],$data['id']])?ajax():busy();
 	}
 	

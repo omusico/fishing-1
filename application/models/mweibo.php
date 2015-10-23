@@ -68,6 +68,25 @@ class Mweibo extends CI_Model {
 		return $this->db->where(['uid'=>UID,'wid'=>$id])->delete('praise');
 	}
 	
+	function comment($input) {
+		$this->load->model('notify');
+		if ($input['fid']!=0){
+			$t=$this->db->where(['wid'=>$input['wid'],'id'=>$input['fid']])->get('wcomment');
+			if (!$t||$t->num_rows()!=1) attack();
+			$autId=$t->row_array()['uid'];
+			$type=Notify::REPLY;
+		}else {
+			$autId=$this->db->find('weibo',$input['wid'],'id','authorId')['authorId'];
+			$type=Notify::COMMENT;
+		}
+		$input['uid']=UID;
+		$input['time']=time();
+		$this->notify->add($type,
+				$this->db->find('user',UID,'id','name'),
+				$input['wid'],$autId);
+		return $this->db->insert('wcomment',$input);
+	}
+	
 	function _dealData(&$data) {
 		$data['images']=json_decode(gzuncompress($data['images']),TRUE);
 		$data['praiseCount']=$this->db->where('wid',$data['id'])->count_all_results('praise');
