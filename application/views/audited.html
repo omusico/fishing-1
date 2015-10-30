@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html>
+    
+    <head>
+        <meta charset="utf-8" />
+        <title>已审核地点</title>
+        <!-- Bootstrap -->
+        <link href="/css/bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen">
+        <link href="/css/bootstrap/css/bootstrap-responsive.min.css" rel="stylesheet" media="screen">
+        <link href="/css/assets/styles.css" rel="stylesheet" media="screen" />
+        <link rel="stylesheet" href="/css/audited.css" />
+        <!--[if lte IE 8]><script language="javascript" type="text/javascript" src="vendors/flot/excanvas.min.js"></script><![endif]-->
+        <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+        <!--[if lt IE 9]>
+            <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+    </head>
+    <style>
+        .displayImg{
+            position: absolute;
+            width:400px;
+        }
+        .displayImg img{
+            height:400px;
+        }
+    </style>
+    <body>
+    <div class="navbar navbar-fixed-top">
+        <div class="navbar-inner">
+            <div class="container-fluid">
+                <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse"> <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </a>
+                <a class="brand" href="/admin/">管理导航</a>
+                <div class="nav-collapse collapse">
+                    <ul class="nav pull-right">
+                        <li class="dropdown">
+                            <a href="/index.php/common/whereisfish/">登出 </i>
+
+                            </a>
+                        </li>
+                    </ul>
+                    <ul class="nav">
+                        <li class="dropdown">
+                            <a href="#" data-toggle="dropdown" class="dropdown-toggle">钓点功能 <b class="caret"></b>
+
+                            </a>
+                            <ul class="dropdown-menu" id="menu1">
+                                <li>
+                                    <a href="/admin/view/audited">已审核钓点</a>
+                                </li>
+                                <li>
+                                    <a href="/admin/view/pending">待审核钓点</a>
+                                </li>
+                                <li>
+                                    <a href="/admin/view/addplace">添加钓点</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="dropdown">
+                            <a href="#" role="button" class="dropdown-toggle" data-toggle="dropdown">app信息 <i class="caret"></i>
+
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li>
+                                    <a tabindex="-1" href="#">版本信息</a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+                <!--/.nav-collapse -->
+            </div>
+        </div>
+    </div>
+
+    <div class="container-fluid">
+            <div class="row-fluid">
+                <div class="span3" id="sidebar">
+                    <ul class="nav nav-list bs-docs-sidenav nav-collapse collapse">
+
+                    </ul>
+                    <ul class="pagination">
+                        <li><a href="###" id="pre">&laquo;</a></li>
+                        <li><a href="###" id="next">&raquo;</a></li>
+                    </ul>
+                </div>
+                <!--/span-->
+                <div class="span6" id="content">
+                     <!-- validation -->
+                    <div class="row-fluid">
+                         <!-- block -->
+                        <div class="block">
+                            <div class="navbar navbar-inner block-header">
+                                <div class="muted pull-left">已审核地点信息</div>
+                            </div>
+                            <div class="block-content collapse in">
+                                <div class="span12">
+					<!-- BEGIN FORM-->
+                                    <form  id="auditedPlace" class="form-horizontal">
+                                        <fieldset>
+                                            <div class="control-group">
+                                                <label class="control-label">地点名称：</label>
+                                                <div class="controls">
+                                                    <input type="text" name="name" id="dename" class="span6 m-wrap" />
+                                                </div>
+                                            </div>
+                                            <div class="control-group">
+                                                <label class="control-label">价格：</label>
+                                                <div class="controls">
+                                                    <input type="text" name="cost" id="decost" class="span6 m-wrap" />
+                                                </div>
+                                            </div>
+                                            <div class="control-group">
+                                                <label class="control-label">介绍：</label>
+                                                <div class="controls">
+                                                    <input type="text" name="content" id="decontent" class="span6 m-wrap" />
+                                                </div>
+                                            </div>
+                                            <div class="control-group">
+                                                <label class="control-label">联系方式：</label>
+                                                <div class="controls">
+                                                    <input type="text" name="tel" id="detel" class="span6 m-wrap"/>
+                                                </div>
+                                            </div>
+                                            <div class="control-group">
+                                                <label class="control-label">发布时间：</label>
+                                                <div class="controls">
+                                                    <input type="text" id="detime" class="span6 m-wrap" disabled />
+                                                </div>
+                                            </div>
+                                            <div class="control-group">
+                                                <label class="control-label" for="optionsCheckbox">鱼种：</label>
+                                                <input type="hidden" name="fishTpye" id="fishTpye" />
+                                                <div class="controls" id="fishType">
+                                                    <div id="curFish">
+                                                    <!-- 鱼种： -->
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="control-group">
+                                                <label class="control-label">经度：</label>
+                                                <div class="controls">
+                                                    <input type="text" name="lng" id="delng" class="span6 m-wrap"/>
+                                                </div>
+                                            </div>
+                                            <div class="control-group">
+                                                <label class="control-label">纬度：</label>
+                                                <div class="controls">
+                                                    <input type="text" name="lat" id="delat" class="span6 m-wrap"/>
+                                                </div>
+                                            </div>
+                                            <div class="control-group">
+                                                <label class="control-label">简略地址：</label>
+                                                <div class="controls">
+                                                    <input type="text" name="briefAddr" id="debriefAddr" class="span6 m-wrap" />
+                                                </div>
+                                            </div>
+                                            <div class="control-group">
+                                                <label class="control-label">收费类型：<span class="required">*</span></label>
+                                                <div class="controls">
+                                                    <select class="span6 m-wrap" name="costType" id="decostType">
+                                                        <option value="" selected="selected"></option>
+                                                        <option value="0">免费</option>
+                                                        <option value="1">斤塘</option>
+                                                        <option value="2">天塘</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="control-group">
+                                                <label class="control-label">河流类型：<span class="required">*</span></label>
+                                                <div class="controls">
+                                                    <select class="span6 m-wrap" name="poolType" id="depoolType">
+                                                        <option value="" selected="selected"></option>
+                                                        <option value="0">池塘</option>
+                                                        <option value="1">水库</option>
+                                                        <option value="2">江河</option>
+                                                        <option value="3">湖</option>
+                                                        <option value="4">海洋</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="control-group">
+                                                <label class="control-label">服务类型：<span class="required">*</span></label>
+                                                <div class="controls" id="service" >
+                                                <input type="hidden" name="serviceType" id="serviceType" />
+                                                    <div id="curService">
+                                                        <!-- 服务类型： -->
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="control-group">
+                                                <label class="control-label">面积：<span class="required">*</span></label>
+                                                <div class="controls">
+                                                    <select class="span6 m-wrap" name="area" id="dearea" >
+                                                        <option value="" selected="selected"></option>
+                                                        <option value="5亩以下">5亩以下</option>
+                                                        <option value="5-20亩">5-20亩</option>
+                                                        <option value="20亩以上">20亩以上</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="control-group">
+                                                <label class="control-label">水深：<span class="required">*</span></label>
+                                                <div class="controls">
+                                                    <select class="span6 m-wrap" name="deep" id="dedeep" >
+                                                        <option value="" selected="selected"></option>
+                                                        <option value="3米以下">3米以下</option>
+                                                        <option value="3-5米">3-5米</option>
+                                                        <option value="5米以上">5米以上</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="control-group">
+                                                <label class="control-label">能否打洞：<span class="required">*</span></label>
+                                                <div class="controls">
+                                                    <select class="span6 m-wrap" name="hole" id="dehole" >
+                                                        <option value="" selected="selected"></option>
+                                                        <option value="0">不能</option>
+                                                        <option value="1">能</option>
+                                                        <option value="2">未知</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="control-group">
+                                                <label class="control-label">预览图：</label>
+                                                <div class="controls" id="preView">
+                                                </div>
+                                            </div>
+                                            <div class="control-group">
+                                                <label class="control-label">图片：</label>
+                                                <input type="hidden" name="picture" id="picture" />
+                                                <div class="controls" id="depics">
+                                                </div><button data-toggle="modal" data-target="#upload" class="addPics">添加图片</button>
+                                            </div>
+                                            <div class="form-actions">
+                                                <input type="hidden" id="infoId" />
+                                                <button class="btn btn-primary" data-index="" id="sub">提交更改</button>
+                                            </div>
+                                        </fieldset>
+                                    </form>
+					<!-- END FORM-->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- 上传图片的浮动框 -->
+        <div class="modal fade" id="upload" tabindex="-1" role="dialog"
+             aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close"
+                                data-dismiss="modal" aria-hidden="true">
+                            &times;
+                        </button>
+                        <h4 class="modal-title" id="myModalLabel">
+                            上传新的图片
+                        </h4>
+                    </div>
+                    <div class="modal-body">
+                        <form onsubmit="return upload()" name="form" id="upPics">
+                            <input type="hidden" name="token" value="" id="token"><br />
+                            <input type="file" name="file">
+                            <input type="submit" value="提交">
+                        </form>
+                        <div id="upinfo"></div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default"
+                                data-dismiss="modal">关闭
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <hr>
+            <footer>
+            </footer>
+        </div>
+        <!-- 图片显示框-->
+            <div class="displayImg">
+
+            </div>
+        </div>
+        <!--/.fluid-container-->
+        <link href="/css/uniform.default.css" rel="stylesheet" media="screen">
+        <link href="/css/chosen.min.css" rel="stylesheet" media="screen">
+        <script src="/scripts/jQuery/jquery-1.9.1.min.js"></script>
+        <script src="/css/bootstrap/js/bootstrap.min.js"></script>
+    <script src="/scripts/loadPage/loadPage.js"></script>
+    </body>
+</html>

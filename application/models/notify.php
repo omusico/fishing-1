@@ -6,6 +6,7 @@ class Notify extends CI_Model {
 	const PASS=200;
 	const FAIL=201;
 	const ADD=202;
+	const ATTEND=300;
 	
 	function add($type,$data,$id,$uid=0) {
 		$res=['link'=>$id,'uid'=>$uid,'time'=>time(),'type'=>$type];
@@ -24,6 +25,9 @@ class Notify extends CI_Model {
 				break;
 			case Notify::ADD:
 				$res['msg']="新增钓点$data[name]";
+				break;
+			case Notify::ATTEND:
+				$res['msg']="$data[name]关注了你";
 				break;
 			default:attack();
 		}

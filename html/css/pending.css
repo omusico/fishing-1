@@ -1,0 +1,32 @@
+.pagination{
+    list-style: none;
+}
+.pagination li{
+    float:left;
+    margin:0 5px 0 0;
+}
+.pagination li a{
+    display: block;
+    width:36px;
+    height:36px;
+    text-align: center;
+    line-height:36px;
+    background:#fff;
+    border-radius: 5px;
+    box-shadow: 1px 1px 1px #ccc;
+}
+#preView,#pics{
+    height:200px;
+}
+#preView img{
+    height:200px;
+}
+#pics img{
+    height:200px;
+}
+
+.text-box{
+    resize: none;
+    width:516px;
+    height:137px;
+}

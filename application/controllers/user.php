@@ -142,7 +142,7 @@ class User extends CI_Controller {
 	
 	function contact() {
 		$this->m->check() OR noRights();
-		$input=json_decode($this->input->post('data'),TRUE) OR errInput();
+		($input=json_decode($this->input->post('data'),TRUE)!=NULL) OR errInput();
 		ajax(0,'',$this->m->contact($input));
 	}
 	
@@ -174,11 +174,14 @@ class User extends CI_Controller {
 	{
 		if (!$this->m->check()) noRights();
 		$id=$this->input->post('id') OR errInput();
+		$this->db->where(['fromid'=>UID,'toId'=>$id])->get('attention')->num_rows()==0 OR ajax(1004,'你已经关注了此用户');
 		$this->db->where('id',$id)->step('fans','user');
-		$this->db->affected_rows()==1 OR errInput();//此用户不存在
+		$this->db->affected_rows()==1 OR attack();//此用户不存在
 		$this->db->where('id',UID)->step('cared');
-		$this->db->insert('attention',['fromid'=>UID,'toId'=>$id]);
-		ajax();
+		$flag=$this->db->insert('attention',['fromid'=>UID,'toId'=>$id]);
+		if (!$flag) busy();
+		$this->load->model('notify');
+		$this->notify->add(Notify::ATTEND,$this->db->find('user',UID,'id','name'),UID,$id)?ajax():busy();
 	}
 	
 	function unAttend()

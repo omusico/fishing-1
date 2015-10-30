@@ -42,17 +42,14 @@ class Common extends CI_Controller {
 		$this->load->model('muser');
 		$this->muser->check() OR noRights();
 		$data=$this->input->post(['content','id']) OR errInput();
-		$data['uid']=UID;
-		$data['type']=0;
+		$data=['content'=>$data['content'],'tid'=>$data['id'],'uid'=>UID,'type'=>0];
 		$this->db->insert('report',$data)?ajax():busy();
 	}
 	
 	function reportWeibo(){
 		$this->load->model('muser');
 		$this->muser->check() OR noRights();
-		$data=$this->input->post(['content','id']) OR errInput();
-		$data['uid']=UID;
-		$data['type']=1;
+		$data=['content'=>$data['content'],'tid'=>$data['id'],'uid'=>UID,'type'=>1];
 		$this->db->insert('report',$data)?ajax():busy();
 	}
 	
@@ -64,13 +61,6 @@ class Common extends CI_Controller {
 	}
 
 	function test() {
-		// $data=$this->db->select('id,picture')->get('place')->result_array();
-		// $update=['picture'=>gzcompress('["http://t11.baidu.com/it/u=1889789971,2360758735&fm=58"]')];
-		// foreach ($data as $value) {
-		// 	$t=gzuncompress($value['picture']);
-		// 	if (!$t){
-		// 		$this->db->where('id',$value['id'])->update('place',$update);
-		// 	}
-		// }
+		// error_log($this->uri->uri_string(),3,APPPATH.'logs/'.date('Y-m-d').'.log');
 	}
 }

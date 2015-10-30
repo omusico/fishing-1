@@ -14,6 +14,11 @@ class admin extends CI_Controller {
 	function index() {
 		$this->load->view('index');
 	}
+
+	function view($value=''){
+		preg_match("/^([a-z])+$/i", $value) OR errInput();
+		$this->load->view($value);
+	}
 	
 	function temp($id=0) {
 		$data=$this->db->find('place', $id);
@@ -40,7 +45,7 @@ class admin extends CI_Controller {
 	}
 	
 	function placeItem($id=0) {
-// 		if ($id==0||!is_numeric($id)) return $this->load->view('placeItem');
+		if ($id==0||!is_numeric($id)) attack();
 		$data=$this->db->find('place', $id);
 		$data OR die('钓点不存在');
 		$data['picture']=json_decode(gzuncompress($data['picture']),TRUE);
@@ -49,10 +54,18 @@ class admin extends CI_Controller {
 	
 	function placeCheck() {
 		$data=$this->input->post(['id','state']) OR errInput();
-		$res=$this->db->find('place', $data['id'],'id','uid');
+		$res=$this->db->find('place', $data['id'],'id','uid,name');
 		$res OR attack();
+		$this->load->model('notify');
 		if ($data['state']==1){
-			
+			$this->notify->add(Notify::PASS,$res,
+					$data['id'],$res['uid']);
+			$this->notify->add(Notify::ADD,$res,
+					$data['id']);
+		}else {
+			$res['info']=$this->input->post('info',FALSE);
+			$this->notify->add(Notify::FAIL,$res,
+					$data['id'],$res['uid']);
 		}
 		$this->db->query("UPDATE place SET state=? WHERE id=?",[$data['state'],$data['id']])?ajax():busy();
 	}

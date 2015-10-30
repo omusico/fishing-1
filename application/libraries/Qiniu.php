@@ -47,8 +47,8 @@ class Qiniu
         if ($key != null) {
             $scope .= ':' . $key;
         }
-        $args = array();
-        $args = self::copyPolicy($args, $policy, $strictPolicy);
+        $args = array('insertOnly'=>1);
+        //$args = self::copyPolicy($args, $policy, $strictPolicy);
         $args['scope'] = $scope;
         $args['deadline'] = $deadline;
         $b = json_encode($args);

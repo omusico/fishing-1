@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html>
+    
+    <head>
+        <title>Forms</title>
+        <!-- Bootstrap -->
+        <link href="/css/bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen">
+        <link href="/css/bootstrap/css/bootstrap-responsive.min.css" rel="stylesheet" media="screen">
+        <link href="/css/assets/styles.css" rel="stylesheet" media="screen">
+        <!--[if lte IE 8]><script language="javascript" type="text/javascript" src="/vendors/flot/excanvas.min.js"></script><![endif]-->
+        <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+        <!--[if lt IE 9]>
+            <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+    </head>
+    
+    <body>
+    <div class="navbar navbar-fixed-top">
+        <div class="navbar-inner">
+            <div class="container-fluid">
+                <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse"> <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </a>
+                <a class="brand" href="/admin/">管理导航</a>
+                <div class="nav-collapse collapse">
+                    <ul class="nav pull-right">
+                        <li class="dropdown">
+                            <a href="/index.php/common/whereisfish/">登出 </i>
+
+                            </a>
+                        </li>
+                    </ul>
+                    <ul class="nav">
+                        <li class="dropdown">
+                            <a href="#" data-toggle="dropdown" class="dropdown-toggle">钓点功能 <b class="caret"></b>
+
+                            </a>
+                            <ul class="dropdown-menu" id="menu1">
+                                <li>
+                                    <a href="/admin/view/audited">已审核钓点</a>
+                                </li>
+                                <li>
+                                    <a href="/admin/view/pending">待审核钓点</a>
+                                </li>
+                                <li>
+                                    <a href="/admin/view/addplace">添加钓点</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="dropdown">
+                            <a href="#" role="button" class="dropdown-toggle" data-toggle="dropdown">app信息 <i class="caret"></i>
+
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li>
+                                    <a tabindex="-1" href="#">版本信息</a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+                <!--/.nav-collapse -->
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid">
+        <div class="row-fluid">
+            <div class="span3" id="sidebar"><!-- 占位 --></div>
+            <!--/span-->
+            <div class="span6" id="content">
+                <!-- validation -->
+                <div class="row-fluid">
+                    <!-- block -->
+                    <div class="block">
+                        <div class="navbar navbar-inner block-header">
+                            <div class="muted pull-left">已审核地点信息</div>
+                        </div>
+                        <div class="block-content collapse in">
+                            <div class="span12">
+                                <!-- BEGIN FORM-->
+                                <form id="auditedPlace" class="form-horizontal">
+                                    <fieldset>
+                                        <div class="control-group">
+                                            <label class="control-label">地点名称：</label>
+                                            <div class="controls">
+                                                <input type="text" name="name" id="dename" class="span6 m-wrap">
+                                            </div>
+                                        </div>
+                                        <div class="control-group">
+                                            <label class="control-label">价格：</label>
+                                            <div class="controls">
+                                                <input type="text" name="cost" id="decost" class="span6 m-wrap">
+                                            </div>
+                                        </div>
+                                        <div class="control-group">
+                                            <label class="control-label">介绍：</label>
+                                            <div class="controls">
+                                                <input type="text" name="content" id="decontent" class="span6 m-wrap">
+                                            </div>
+                                        </div>
+                                        <div class="control-group">
+                                            <label class="control-label">联系方式：</label>
+                                            <div class="controls">
+                                                <input type="text" name="tel" id="detel" class="span6 m-wrap">
+                                            </div>
+                                        </div>
+                                        <div class="control-group">
+                                            <label class="control-label">发布时间：</label>
+                                            <div class="controls">
+                                                <input type="text" id="detime" class="span6 m-wrap" disabled="">
+                                            </div>
+                                        </div>
+                                        <div class="control-group">
+                                            <label class="control-label" for="optionsCheckbox">鱼种：</label>
+                                            <input type="hidden" name="fishTpye" id="fishTpye">
+                                            <div class="controls" id="fishType">
+                                                <div id="curFish">
+                                                    <label for="fishTpye0"><input type="checkbox" id="fishTpye0" class="fishTpye" checked="">鲤鱼
+                                                    </label><label for="fishTpye1"><input type="checkbox" id="fishTpye1" class="fishTpye" checked="">鲫鱼</label>
+                                                    <label for="fishTpye2"><input type="checkbox" id="fishTpye2" class="fishTpye" checked="">草鱼</label>
+                                                    <label for="fishTpye3"><input type="checkbox" id="fishTpye3" class="fishTpye" checked="">青鱼</label>
+                                                    <label for="fishTpye4"><input type="checkbox" id="fishTpye4" class="fishTpye">石尾子</label><label for="fishTpye5"><input type="checkbox" id="fishTpye5" class="fishTpye">细鳞鱼</label>
+                                                    <label for="fishTpye6"><input type="checkbox" id="fishTpye6" class="fishTpye" checked="">鲶鱼</label>
+                                                    <label for="fishTpye7"><input type="checkbox" id="fishTpye7" class="fishTpye">黄腊丁</label><label for="fishTpye8"><input type="checkbox" id="fishTpye8" class="fishTpye">马口</label>
+                                                    <label for="fishTpye9"><input type="checkbox" id="fishTpye9" class="fishTpye">花白鲢</label><label for="fishTpye10"><input type="checkbox" id="fishTpye10" class="fishTpye">白参</label>
+                                                    <label for="fishTpye11"><input type="checkbox" id="fishTpye11" class="fishTpye">翘壳</label>
+                                                    <label for="fishTpye12"><input type="checkbox" id="fishTpye12" class="fishTpye" checked="">其它</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="control-group">
+                                            <label class="control-label">经度：</label>
+                                            <div class="controls">
+                                                <input type="text" name="lng" id="delng" class="span6 m-wrap">
+                                            </div>
+                                        </div>
+                                        <div class="control-group">
+                                            <label class="control-label">纬度：</label>
+                                            <div class="controls">
+                                                <input type="text" name="lat" id="delat" class="span6 m-wrap">
+                                            </div>
+                                        </div>
+                                        <div class="control-group">
+                                            <label class="control-label">简略地址：</label>
+                                            <div class="controls">
+                                                <input type="text" name="briefAddr" id="debriefAddr" class="span6 m-wrap">
+                                            </div>
+                                        </div>
+                                        <div class="control-group">
+                                            <label class="control-label">收费类型：<span class="required">*</span></label>
+                                            <div class="controls">
+                                                <select class="span6 m-wrap" name="costType" id="decostType">
+                                                    <option value="" selected="selected"></option>
+                                                    <option value="0">免费</option>
+                                                    <option value="1">斤塘</option>
+                                                    <option value="2">天塘</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="control-group">
+                                            <label class="control-label">河流类型：<span class="required">*</span></label>
+                                            <div class="controls">
+                                                <select class="span6 m-wrap" name="poolType" id="depoolType">
+                                                    <option value="" selected="selected"></option>
+                                                    <option value="0">池塘</option>
+                                                    <option value="1">水库</option>
+                                                    <option value="2">江河</option>
+                                                    <option value="3">湖</option>
+                                                    <option value="4">海洋</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="control-group">
+                                            <label class="control-label">服务类型：<span class="required">*</span></label>
+                                            <div class="controls" id="service">
+                                                <input type="hidden" name="serviceType" id="serviceType">
+                                                <div id="curService">
+                                                    <label for="serviceType0"><input type="checkbox" id="serviceType0" class="serviceType">夜钓</label>
+                                                    <label for="serviceType1"><input type="checkbox" id="serviceType1" class="serviceType">住宿</label>
+                                                    <label for="serviceType2"><input type="checkbox" id="serviceType2" class="serviceType">餐饮</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="control-group">
+                                            <label class="control-label">面积：<span class="required">*</span></label>
+                                            <div class="controls">
+                                                <select class="span6 m-wrap" name="area" id="dearea">
+                                                    <option value="" selected="selected"></option>
+                                                    <option value="5亩以下">5亩以下</option>
+                                                    <option value="5-20亩">5-20亩</option>
+                                                    <option value="20亩以上">20亩以上</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="control-group">
+                                            <label class="control-label">水深：<span class="required">*</span></label>
+                                            <div class="controls">
+                                                <select class="span6 m-wrap" name="deep" id="dedeep">
+                                                    <option value="" selected="selected"></option>
+                                                    <option value="3米以下">3米以下</option>
+                                                    <option value="3-5米">3-5米</option>
+                                                    <option value="5米以上">5米以上</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="control-group">
+                                            <label class="control-label">能否打洞：<span class="required">*</span></label>
+                                            <div class="controls">
+                                                <select class="span6 m-wrap" name="hole" id="dehole">
+                                                    <option value="" selected="selected"></option>
+                                                    <option value="0">不能</option>
+                                                    <option value="1">能</option>
+                                                    <option value="2">未知</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="control-group">
+                                            <label class="control-label">预览图：</label>
+
+                                        </div>
+                                        <div class="control-group">
+                                            <label class="control-label">图片：</label>
+
+                                        </div>
+                                        <div class="form-actions">
+                                            <input type="hidden" id="infoId">
+                                            <button class="btn btn-primary" data-index="" id="sub">提交</button>
+                                        </div>
+                                    </fieldset>
+                                </form>
+                                <!-- END FORM-->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <hr>
+        <footer>
+        </footer>
+    </div>
+        <link href="/css/uniform.default.css" rel="stylesheet" media="screen">
+        <link href="/css/chosen.min.css" rel="stylesheet" media="screen">
+        <script src="/scripts/jQuery/jquery-1.9.1.min.js"></script>
+        <script src="/css/bootstrap/js/bootstrap.min.js"></script>
+
+    </body>
+
+</html>

@@ -16,6 +16,7 @@ class Muser extends CI_Model {
 			return FALSE;
 		else{
 			define('UID', $data['id']);
+			error_log($this->uri->uri_string().' UID:'.UID,3,APPPATH.'logs/'.date('Y-m-d').'.log');
 			return TRUE;
 		}
 	}

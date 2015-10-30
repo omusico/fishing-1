@@ -22,8 +22,8 @@ class Weibo extends CI_Controller {
 		$this->load->model('muser','user');
 		if (!$this->user->check()) noRights();
 		$id=$this->input->post('id');
-		$uid=$this->db->find('weibo',$id,'id','uid');
-		if (!empty($uid)&&$uid['uid']==UID){
+		$uid=$this->db->find('weibo',$id,'id','authorId');
+		if (!empty($uid)&&$uid['authorId']==UID){
 			$this->db->delete('weibo',['id'=>$id])?ajax():busy();//做了外键约束，只删微博就够了
 		}else attack();
 	}
