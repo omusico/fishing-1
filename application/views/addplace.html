@@ -2,11 +2,13 @@
 <html>
     
     <head>
-        <title>Forms</title>
+        <meta charset="utf-8" />
+        <title>添加钓点</title>
         <!-- Bootstrap -->
         <link href="/css/bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen">
         <link href="/css/bootstrap/css/bootstrap-responsive.min.css" rel="stylesheet" media="screen">
         <link href="/css/assets/styles.css" rel="stylesheet" media="screen">
+        <link rel="stylesheet" href="/css/addPlace.css" />
         <!--[if lte IE 8]><script language="javascript" type="text/javascript" src="/vendors/flot/excanvas.min.js"></script><![endif]-->
         <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
         <!--[if lt IE 9]>
@@ -79,7 +81,7 @@
                         <div class="block-content collapse in">
                             <div class="span12">
                                 <!-- BEGIN FORM-->
-                                <form id="auditedPlace" class="form-horizontal">
+                                <form id="addPlace" class="form-horizontal">
                                     <fieldset>
                                         <div class="control-group">
                                             <label class="control-label">地点名称：</label>
@@ -106,26 +108,23 @@
                                             </div>
                                         </div>
                                         <div class="control-group">
-                                            <label class="control-label">发布时间：</label>
-                                            <div class="controls">
-                                                <input type="text" id="detime" class="span6 m-wrap" disabled="">
-                                            </div>
-                                        </div>
-                                        <div class="control-group">
-                                            <label class="control-label" for="optionsCheckbox">鱼种：</label>
-                                            <input type="hidden" name="fishTpye" id="fishTpye">
+                                            <label class="control-label">鱼种：</label>
+                                            <input type="hidden" name="fishType" id="fishTypeVal" />
                                             <div class="controls" id="fishType">
                                                 <div id="curFish">
-                                                    <label for="fishTpye0"><input type="checkbox" id="fishTpye0" class="fishTpye" checked="">鲤鱼
-                                                    </label><label for="fishTpye1"><input type="checkbox" id="fishTpye1" class="fishTpye" checked="">鲫鱼</label>
-                                                    <label for="fishTpye2"><input type="checkbox" id="fishTpye2" class="fishTpye" checked="">草鱼</label>
-                                                    <label for="fishTpye3"><input type="checkbox" id="fishTpye3" class="fishTpye" checked="">青鱼</label>
-                                                    <label for="fishTpye4"><input type="checkbox" id="fishTpye4" class="fishTpye">石尾子</label><label for="fishTpye5"><input type="checkbox" id="fishTpye5" class="fishTpye">细鳞鱼</label>
-                                                    <label for="fishTpye6"><input type="checkbox" id="fishTpye6" class="fishTpye" checked="">鲶鱼</label>
-                                                    <label for="fishTpye7"><input type="checkbox" id="fishTpye7" class="fishTpye">黄腊丁</label><label for="fishTpye8"><input type="checkbox" id="fishTpye8" class="fishTpye">马口</label>
-                                                    <label for="fishTpye9"><input type="checkbox" id="fishTpye9" class="fishTpye">花白鲢</label><label for="fishTpye10"><input type="checkbox" id="fishTpye10" class="fishTpye">白参</label>
-                                                    <label for="fishTpye11"><input type="checkbox" id="fishTpye11" class="fishTpye">翘壳</label>
-                                                    <label for="fishTpye12"><input type="checkbox" id="fishTpye12" class="fishTpye" checked="">其它</label>
+                                                    <label for="fishTpye0"><input type="checkbox" id="fishTpye0" class="fishTpye" value="0" />鲤鱼
+                                                    </label><label for="fishTpye1"><input type="checkbox" id="fishTpye1" class="fishTpye" value="1" />鲫鱼</label>
+                                                    <label for="fishTpye2"><input type="checkbox" value="2" id="fishTpye2" class="fishTpye" >草鱼</label>
+                                                    <label for="fishTpye3"><input type="checkbox" id="fishTpye3" class="fishTpye" value="3" />青鱼</label>
+                                                    <label for="fishTpye4"><input type="checkbox" id="fishTpye4" class="fishTpye" value="4">石尾子</label>
+                                                    <label for="fishTpye5"><input type="checkbox" id="fishTpye5" class="fishTpye" value="5">细鳞鱼</label>
+                                                    <label for="fishTpye6"><input type="checkbox" id="fishTpye6" class="fishTpye" value="6">鲶鱼</label>
+                                                    <label for="fishTpye7"><input type="checkbox" id="fishTpye7" class="fishTpye" value="7">黄腊丁</label>
+                                                    <label for="fishTpye8"><input type="checkbox" id="fishTpye8" class="fishTpye" value="8">马口</label>
+                                                    <label for="fishTpye9"><input type="checkbox" id="fishTpye9" class="fishTpye" value="9">花白鲢</label>
+                                                    <label for="fishTpye10"><input type="checkbox" id="fishTpye10" class="fishTpye" value="10">白参</label>
+                                                    <label for="fishTpye11"><input type="checkbox" id="fishTpye11" class="fishTpye" value="11">翘壳</label>
+                                                    <label for="fishTpye12"><input type="checkbox" id="fishTpye12" class="fishTpye" value="12">其它</label>
                                                 </div>
                                             </div>
                                         </div>
@@ -173,12 +172,12 @@
                                         </div>
                                         <div class="control-group">
                                             <label class="control-label">服务类型：<span class="required">*</span></label>
+                                            <input type="hidden" name="serviceType" id="serviceType" />
                                             <div class="controls" id="service">
-                                                <input type="hidden" name="serviceType" id="serviceType">
                                                 <div id="curService">
-                                                    <label for="serviceType0"><input type="checkbox" id="serviceType0" class="serviceType">夜钓</label>
-                                                    <label for="serviceType1"><input type="checkbox" id="serviceType1" class="serviceType">住宿</label>
-                                                    <label for="serviceType2"><input type="checkbox" id="serviceType2" class="serviceType">餐饮</label>
+                                                    <label for="serviceType0"><input type="checkbox" id="serviceType0" class="serviceType" value="0">夜钓</label>
+                                                    <label for="serviceType1"><input type="checkbox" id="serviceType1" class="serviceType" value="1">住宿</label>
+                                                    <label for="serviceType2"><input type="checkbox" id="serviceType2" class="serviceType" value="2">餐饮</label>
                                                 </div>
                                             </div>
                                         </div>
@@ -216,16 +215,13 @@
                                             </div>
                                         </div>
                                         <div class="control-group">
-                                            <label class="control-label">预览图：</label>
-
-                                        </div>
-                                        <div class="control-group">
-                                            <label class="control-label">图片：</label>
-
+                                            <label class="control-label">图片上传：</label>
+                                            <input type="hidden" name="preview" id="prePic" />
+                                            <input type="hidden" name="picture" id="pic" />
+                                            <a class="btn btn-primary" data-toggle="modal" data-target="#upload" class="addPics">添加图片</a>
                                         </div>
                                         <div class="form-actions">
-                                            <input type="hidden" id="infoId">
-                                            <button class="btn btn-primary" data-index="" id="sub">提交</button>
+                                            <a class="btn btn-primary" id="subAddPlace">提交</a>
                                         </div>
                                     </fieldset>
                                 </form>
@@ -236,15 +232,62 @@
                 </div>
             </div>
         </div>
+
+        <!-- 图片上传模态框-->
+        <div class="modal fade modal-box" id="upload" tabindex="-1" role="dialog"
+             aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close"
+                                data-dismiss="modal" aria-hidden="true">
+                            &times;
+                        </button>
+                        <h4 class="modal-title" id="myModalLabel">
+                            上传新的图片
+                        </h4>
+                    </div>
+                    <div class="modal-body">
+                        <h4>预览图</h4>
+                        <form name="form" id="upPreview">
+                            <input type="hidden" name="token" value="" id="tokenPre"><br />
+                            <input type="file" name="file">
+                            <a class="btn btn-primary" id="subPre">提交</a>
+                        </form>
+                        <div id="upinfo"></div>
+
+                        <h4>实拍图</h4>
+                        <form>
+                            <input type="file" id="fileElem" multiple accept="image/*" style="display: none;" onchange="add.handleFile(this.files)"/>
+                        </form>
+                        <a href="###" id="doClick">select files</a>
+                        <div id="fileList">
+                            <p>no files here</p>
+                        </div>
+                        <!--<form name="form" id="upPics">
+                            <input type="hidden" name="token" value="" id="token"><br />
+                            <input type="file" name="file">
+                            <a class="btn btn-primary" id="subPic">提交</a>
+                        </form>
+                        <div id="upinfop"></div>-->
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default"
+                                data-dismiss="modal" id="picVal">关闭
+                        </button>
+                    </div>
+                </div>
+            </div>
         <hr>
         <footer>
         </footer>
     </div>
+        </div>
         <link href="/css/uniform.default.css" rel="stylesheet" media="screen">
         <link href="/css/chosen.min.css" rel="stylesheet" media="screen">
         <script src="/scripts/jQuery/jquery-1.9.1.min.js"></script>
         <script src="/css/bootstrap/js/bootstrap.min.js"></script>
-
+    <script src="/scripts/addPlace.js"></script>
     </body>
 
 </html>

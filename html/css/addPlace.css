@@ -1,0 +1,9 @@
+#curFish {
+    position: relative;
+}
+#curFish label{
+    display: inline-block;
+}
+.modal-box{
+    display: none;
+}

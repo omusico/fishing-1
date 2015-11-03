@@ -8,12 +8,13 @@ class Place extends CI_Controller {
 			define('UID', 1);
 		}
 		$data=$this->db->create('place');
-		if (isset($data['state'])||!isset($data['id'])||!is_numeric($data['id']))//有审核状态，直接干掉
+		if (!isset($data['id']))
+			$data['id']=0;
+		if (isset($data['state'])||!is_numeric($data['id']))//有审核状态，直接干掉
 			attack();
 		if (isset($data['picture']))
 			$data['picture']=gzcompress($data['picture']);
 		$data['uid']=UID;
-		$data['time']=time();
 		if ($data['id']!=0){
 			$uid=$this->db->find('', $data['id'],'id','uid');
 			$uid OR ajax(2001,'钓点不存在');
