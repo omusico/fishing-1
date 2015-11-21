@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="zh-Hans">
+<head>
+    <meta charset="UTF-8">
+    <title>{$name}</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no,minimal-ui">
+    <meta name="apple-mobile-web-app-capable" conent="yes">
+    <meta name="apple-mobile-web-app-status-bar-style">
+    <meta name="format-detection" content="telephone=no,emaul=no">
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/reset/reset.css">
+</head>
+<body>
+<div class="fish-place">
+    <ul>
+        <li>
+            <img class="fish-place-preview" src="{$preview}" alt="预览图">
+        </li>
+        <!--<li>
+            <div class="fish-place-info clearfix">
+                <i class="fish-place-info-start">{$score}</i>
+            </div>
+        </li>-->
+        <li>
+            <div class="fish-place-info clearfix">
+                {if $poolType eq ''}
+                {else}
+                <i class="icon-range">
+                </i>
+                {/if}
+                {if $serviceType eq ''}
+                {else}
+                <i class="icon-blue">
+                </i>
+                {/if}
+            </div>
+        </li>
+        <li>
+            <div class="fish-place-info clearfix">
+                <i class="icon fish-place-contributer"></i>
+                <em class="fish-place-contributer-intro">钓点贡献者</em>
+                <span>{$authorName}</span>
+                <img class="fish-place-contributer-po" src="{$authorFace}" alt="头像">
+            </div>
+        </li>
+        <li>
+            <div class="fish-place-info clearfix">
+                <i class="icon fish-place-averagecosts"></i>
+                 <em class="fish-place-contributer-intro">人均消费:</em><span>{$cost}元</span>
+            </div>
+        </li>
+        <li>
+            <div class="fish-place-info clearfix">
+                <i class="icon fish-place-deep"><!-- 水深 --></i>
+                <em class="fish-place-contributer-intro">水深:</em>
+                <span>{$deep}</span>
+            </div>
+        </li>
+        <li>
+            <div class="fish-place-info clearfix">
+                <i class="icon fish-place-area"><!-- 面积 --></i>
+                <em class="fish-place-contributer-intro">面积:</em>
+                <span>面积：{$area}</span>
+            </div>
+        </li>
+        <li>
+            <div class="fish-place-info clearfix">
+                <i class="icon fish-place-hole"><!-- 打窝 --></i>
+                <em class="fish-place-contributer-intro">能否打窝:</em>
+                <span>
+                    {if $hole eq '0'}
+                    未知
+                    {elseif $hole eq '1'}
+                    能打窝
+                    {elseif $hole eq '2'}
+                    不能打窝
+                    {/if}
+                </span>
+            </div>
+        </li>
+        <li>
+            <div class="fish-place-info clearfix">
+                <i class="icon fish-place-fishtype"><!-- 鱼种 --></i>
+                <em class="fish-place-contributer-intro">鱼种:</em>
+                <span id="fish"></span>
+            </div>
+        </li>
+        <li>
+            <div class="fish-place-info clearfix">
+                <i class="icon fish-place-comment"><!-- QQ --></i>
+                <em class="fish-place-contributer-intro">核心用户QQ交流群：119433597
+                </em>
+            </div>
+        </li>
+    </ul>
+    <div class="fish-place-map clearfix">
+        <div id="container"></div>
+        <a class="clearfix" href="http://7xn7nj.com2.z0.glb.qiniucdn.com/fishingv1.0.apk">
+        <div class="fish-place-download clearfix">
+            <i class="icon fish-place-detail"><!-- 详情，点击下载 --></i>
+            <div class="fish-place-download-intro">
+                <span class="t-strong">空钩钓鱼安卓客户端下载</span>
+                <span class="t-light">寻找·同城·附近·钓点</span>
+            </div>
+            <i class="fish-place-download-icon">↓</i>
+        </div>
+        </a>
+    </div>
+</div>
+<script src="/scripts/jQuery/jquery-2.1.4.min.js"></script>
+<script type="text/javascript" src="http://webapi.amap.com/maps?v=1.3&key=6da27f4d46e404cbcbcd889a2a63fd75"></script>
+<script type="text/javascript" src="/scripts/sharemap.js"></script>
+
+<script type="text/javascript">
+   var loadData = {ldelim}
+        lng:{$lng},
+        lat:{$lat},
+        fishType:'{$fishType}',
+                poolType:'{$poolType}',
+   serviceType:'{$serviceType}'
+   {rdelim}
+   {literal}
+    $(function(){
+        $mapEvent.loadMap( loadData.lng,loadData.lat,'container');
+        //加载icon
+        $mapEvent.addIcon( loadData.lng,loadData.lat);
+        infoEvent.loadtxt(loadData.fishType,loadData.poolType,loadData.serviceType);
+    })
+   {/literal}
+</script>
+</body>
+</html>

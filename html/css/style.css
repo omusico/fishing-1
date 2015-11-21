@@ -1,17 +1,183 @@
-/***地图显示**/
-.manage-map{
-    margin-top:10px;
-    width:800px;
+.clearfix{}
+.clearfix:after{
+    content:".";
+    visibility: hidden;
+    display:block;
+    height:0;
+    clear:both;
+}
+#container{
+    position: relative;
+    z-index: 1;
+    width:100%;
+    height:250px;
+}
+
+.fish-place{
+    width:100%;
+    height:auto;
+}
+.fish-place ul{
+    display:block;
+    width:100%;
+}
+.fish-place ul li{
+    margin:5px 0;
+    border-bottom:1px solid #ccc;
+    display: block;
+    width:100%;
+}
+.fish-place-info{
+    display: block;
+    padding:10px 5px;
+}
+.fish-place-info span{
+    float:right;
+    height:30px;
+    padding: 5px 0;
+    text-align: center;
+    line-height:30px;
+}
+.fish-place-preview{
+    width:100%;
+    height:auto;
+}
+.fish-place-collect{
     display: block;
     float:right;
-    padding:10px;
-    border:1px solid #ccc;
-    box-shadow:1px 1px 1px #ccc;
+    width:50px;height:30px;
+    text-decoration: none;
+    color:#fff;
+    background:#66BAB7;
+    text-align: center;
+    line-height:30px;
+    border-radius: 5px;
 }
-#allmap{
-   width:100%;
-    height:500px;
+.fish-place-contributer-intro{
+    display: block;
+    float:left;
+    font-style: normal;
+    height:30px;
+    padding:5px 0;
+    line-height:30px;
+    text-align: center;
 }
-#r-result{
+.fish-place-contributer-po{
+    width:40px;
+    height:40px;
+    border-radius:50%;
+    float:right;
+}
+
+/*icon*/
+.fish-place-map{
+    position: relative;
     width:100%;
+}
+.fish-place-map a{
+    display: block;
+}
+.fish-place-download{
+    background:#fff;
+    position: fixed;
+    bottom:-1px;
+    left:0;
+    width:100%;
+    padding:5px 0;
+    z-index: 2;
+    height:40px;
+}
+.fish-place-detail{
+    background:url("../images/logo_1024.png") no-repeat scroll 0 0;
+    background-size:40px 40px;
+}
+.fish-place-download-intro{
+    display: block;
+    float:left;
+    height:40px;
+    padding:5px 0;
+}
+.fish-place-download-intro span{
+    display: block;
+}
+.t-strong{
+    color:#000;
+    font-weight: bold;
+}
+.t-light{
+    color:#656765;
+    font-size: 14px;
+}
+.fish-place-download-icon{
+    display: block;
+    float:right;
+    height:40px;
+    width:40px;
+    border:1px solid #373C38;
+    border-radius: 50%;
+    text-align: center;
+    line-height: 40px;
+    color:#373C38;
+}
+.icon-range{
+    text-align: center;
+    line-height:50px;
+    border-radius: 50%;
+    width:50px;
+    height:50px;
+    display: block;
+    float:left;
+    border:2px solid #F75C2F;
+    margin:0 10px;
+}
+.icon-blue{
+    text-align: center;
+    line-height:50px;
+    border-radius: 50%;
+    width:50px;
+    height:50px;
+    display: block;
+    float:left;
+    border:2px solid #66BAB7;
+    margin:0 10px;
+}
+.icon{
+    display: block;
+    width:40px;
+    height:40px;
+    display: block;
+    float:left;
+    margin-right:10px;
+}
+.fish-place-address{
+    background:url("../images/location_point_green.png") no-repeat scroll 0 0;
+    background-size:40px 40px;
+}
+.fish-place-contributer{
+    background:url("../images/place_contributor.png") no-repeat scroll 0 0;
+    background-size:40px 40px;
+}
+.fish-place-averagecosts{
+    background:url("../images/place_price.png") no-repeat scroll 0 0;
+    background-size:40px 40px;
+}
+.fish-place-deep{
+    background:url("../images/place_deep.png") no-repeat scroll 0 0;
+    background-size:40px 40px;
+}
+.fish-place-area{
+    background:url("../images/place_area.png") no-repeat scroll 0 0;
+    background-size:40px 40px;
+}
+.fish-place-hole{
+    background:url("../images/place_nest.png") no-repeat scroll 0 0;
+    background-size:40px 40px;
+}
+.fish-place-fishtype{
+    background:url("../images/place_fish.png") no-repeat scroll 0 0;
+    background-size:40px 40px;
+}
+.fish-place-comment{
+    background:url("../images/place_comment.png") no-repeat scroll 0 0;
+    background-size:40px 40px;
 }
