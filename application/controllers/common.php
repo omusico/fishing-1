@@ -60,6 +60,10 @@ class Common extends CI_Controller {
 		$this->db->insert('feedback',['content'=>$data,'uid'=>UID])?ajax():busy();
 	}
 
-	function test() {
+	function share($id=0) {
+		is_numeric($id) OR attack();
+		$data=$this->db->find('place', $id,'id','*,(SELECT avatar FROM user WHERE id=uid) authorFace,(SELECT name FROM user WHERE id=uid) authorName');
+		!empty($data) OR die('<h1>此钓点不存在！</h1>');
+		$this->load->view('share',$data);
 	}
 }

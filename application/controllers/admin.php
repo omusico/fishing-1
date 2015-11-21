@@ -80,4 +80,27 @@ class admin extends CI_Controller {
 			$this->db->insert('version',$data)?ajax():busy();
 		else $this->load->view('version');
 	}
+	
+	function log($date='') {
+		if ($date=='') {
+			$time=time()-86400;
+			$date=date('Y-m-d',$time);
+		}else if (!preg_match("/^([0-9-])+$/i", $date)) errInput();
+		$date=APPPATH."logs/$date.json";
+		if (!file_exists($date)) die('此日志文件不存在！');
+		$data=json_decode(file_get_contents($date),TRUE);
+		foreach ($data['url'] as $key=>$value) {
+			echo $key.'模块共访问了'.$value['total'].'次，具体访问情况如下：<br />';
+			unset($value['total']);
+			foreach ($value as $key2 => $value2) {
+				echo "$key2 接口访问了$value2 次<br />";
+			}
+			echo '<br />';
+		}
+		echo '<br />';
+		echo '此日共计有'.count($data['user']).'人使用。<br />';
+		foreach ($data['user'] as $key => $value) {
+			echo "ID是$key 的用户访问过$value 次接口。<br />";
+		}
+	}
 }

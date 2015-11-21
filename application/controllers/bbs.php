@@ -24,7 +24,7 @@ class Bbs extends CI_Controller {
 		$page=(int)$this->input->post('page',FALSE,0);
 		$count=(int)$this->input->post('count',FALSE,10);
 		$select='id,(SELECT name FROM user WHERE id=uid) authorName,title,time';
-		if ($page==0) $sql="(SELECT $select FROM bbs ORDER BY rank desc LIMIT 3) UNION (SELECT $select FROM bbs ORDER BY time desc LIMIT ".($count-3).')';
+		if ($page==0) $sql="(SELECT $select FROM bbs ORDER BY reply desc LIMIT 3) UNION (SELECT $select FROM bbs ORDER BY time desc LIMIT ".($count-3).')';
 		else $sql="SELECT $select FROM bbs ORDER BY time desc LIMIT ".($page*$count).",$count";
 		ajax(0,'',$this->db->query($sql)->result_array());
 	}
