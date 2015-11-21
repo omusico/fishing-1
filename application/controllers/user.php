@@ -142,7 +142,7 @@ class User extends CI_Controller {
 	
 	function contact() {
 		$this->m->check() OR noRights();
-		($input=json_decode($this->input->post('data'),TRUE)!=NULL) OR errInput();
+		(($input=json_decode($this->input->post('data'),TRUE))!=NULL) OR errInput();
 		ajax(0,'',$this->m->contact($input));
 	}
 	

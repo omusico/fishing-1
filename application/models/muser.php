@@ -16,7 +16,8 @@ class Muser extends CI_Model {
 			return FALSE;
 		else{
 			define('UID', $data['id']);
-			error_log($this->uri->uri_string().' UID:'.UID.'\n',3,APPPATH.'logs/'.date('Y-m-d').'.log');
+			$log=json_encode(['url'=>$this->uri->uri_string(),'uid'=>UID]);
+			error_log($log."\n",3,APPPATH.'logs/'.date('Y-m-d').'.log');
 			return TRUE;
 		}
 	}
@@ -57,6 +58,7 @@ class Muser extends CI_Model {
 			$tel[]=$value['phone'];
 			$name[$value['phone']]=$value['contact'];
 		}
+		if (empty($tel)) return [];
 		$data=$this->db->select('id,name,avatar,sign,tel')->where_in('tel',$tel)->get('user')->result_array();
 		$res=[];
 		foreach ($data as $value) {
@@ -69,8 +71,6 @@ class Muser extends CI_Model {
 	
 	function getInfo($result) {
 		$result['blogCount']=$this->db->where('authorId',$result['id'])->count_all_results('weibo');
-		$result['attentionCount']=$this->db->where('fromId',$result['id'])->count_all_results('attention');
-		$result['fansCount']=$this->db->where('toId',$result['id'])->count_all_results('attention');
 		$weibo=$this->db->query("SELECT * FROM weibo WHERE authorId=? ORDER BY id desc LIMIT 3",$result['id'])->result_array();
 		$result['seed']=array();
 		foreach ($weibo as $value) {

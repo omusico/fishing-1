@@ -5,9 +5,9 @@ class Common extends CI_Controller {
 		echo '呵呵';
 	}
 	
-	function build() {
+	function build($table='') {
 		$this->load->dbforge();
-		$this->dbforge->column_cache();
+		$this->dbforge->column_cache($table);
 	}
 	
 	function qiniuToken(){
@@ -61,6 +61,5 @@ class Common extends CI_Controller {
 	}
 
 	function test() {
-		// error_log($this->uri->uri_string(),3,APPPATH.'logs/'.date('Y-m-d').'.log');
 	}
 }

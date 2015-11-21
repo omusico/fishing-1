@@ -2027,9 +2027,21 @@ class CI_DB_active_record extends CI_DB_driver {
 		return $this->query("SELECT $select FROM $this->small_table WHERE $key=? limit 1",$value)->row_array();
 	}
 
-	public function field($value=array())
+	/**
+	 * Set fields.
+	 * 
+	 *@param	array		target field
+	 *@param	boolean	chosen or removed
+	 * @return	void
+	 */
+	public function field($value=array(),$table=null)
 	{
-		$this->small_field=$value;
+		if (is_null($table)) $this->small_field=$value;
+		else{
+			$this->small_table=$table;
+			$this->load_cache($table);
+			$this->small_field=array_diff($this->small_cache[$table], $value);
+		}
 		return $this;
 	}
 
