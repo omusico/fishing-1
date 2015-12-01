@@ -99,8 +99,13 @@ class admin extends CI_Controller {
 		}
 		echo '<br />';
 		echo '此日共计有'.count($data['user']).'人使用。<br />';
+		$res=$this->db->select('id,name')->where_in('id',array_keys($data['user']))->get('user')->result_array();
+		$user=[];
+		foreach ($res as $item){
+			$user[$item['id']]=$item['name'];
+		}
 		foreach ($data['user'] as $key => $value) {
-			echo "ID是$key 的用户访问过$value 次接口。<br />";
+			echo "ID是$key 的用户“".$user[(string)$key]."”访问过$value 次接口。<br />";
 		}
 	}
 }

@@ -12,7 +12,7 @@ class Place extends CI_Controller {
 			$data['id']=0;
 		if (isset($data['state'])||!is_numeric($data['id']))//有审核状态，直接干掉
 			attack();
-		if (isset($data['picture']))
+		if (isset($data['picture'])&&is_array(json_decode($data['picture'],TRUE)))
 			$data['picture']=gzcompress($data['picture']);
 		$data['uid']=UID;
 		if ($data['id']!=0){
@@ -95,6 +95,7 @@ class Place extends CI_Controller {
 		$data=$this->input->post(['score','content','images','pid']);
 		if (!$data) errInput();
 		if (!is_numeric($data['score'])||$data['score']<0||$data['score']>10) attack();
+		is_array(json_decode($data['images'],TRUE)) OR errInput();
 		$data['images']=gzcompress($data['images']);
 		$data['uid']=UID;
 		$data['time']=time();

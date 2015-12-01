@@ -13,8 +13,8 @@ class User extends CI_Controller {
 		if (!$this->m->checkTel($data['tel']))
 			ajax(1002, '该手机号已被注册!');
 		$this->load->helper('mob');
-		$response =mobValidate($data['tel'], $data['code']);
-		if ($response === true) {
+		$response =mobValidate($data['tel'], $data['code'],$this->input->post('type',FALSE,0));
+		if ($response === TRUE) {
 			$pics=['http://7xjdz6.com2.z0.glb.qiniucdn.com/S_F29210bdb497e132cc163ad10549de55445c6a8c121473-rHycIk_fw658.jpg',
 					'http://7xjdz6.com2.z0.glb.qiniucdn.com/S_F09abe50a71e7dfc1ea1b176a8f827a75fe6df2aa8d00-IASSny_fw658.jpg',
 					'http://7xjdz6.com2.z0.glb.qiniucdn.com/S_Fde4f5566b00fdbbee9d12046cb6aa836b7d79f89d723-bB29dD_fw658.jpg',
@@ -69,9 +69,9 @@ class User extends CI_Controller {
 		if ($this->m->checkTel($data['tel']))
 			ajax(1001,'此用户不存在！');
 		$this->load->helper('mob');
-		$response =mobValidate($data['tel'], $data['code']);
-		if ($response === true){
-			$this->db->where('tel',$data['tel'])->update('user',['password'=>md5(md5($data['password']).'fish')]) OR busy();
+		$response =mobValidate($data['tel'], $data['code'],$this->input->post('type',FALSE,0));
+		if ($response === TRUE){
+			$this->db->where('tel',$data['tel'])->update('user',['password'=>md5(md5($data['password']).'fish')])?ajax():busy();
 		}else {
 			$response==468?ajax(1004, '验证码错误!'):ajax(1, '验证码平台出错!'.$response);
 		}
@@ -90,8 +90,8 @@ class User extends CI_Controller {
 		if (!$this->m->checkTel($data['tel']))
 			ajax(1002, '该手机号已被注册!');
 		$this->load->helper('mob');
-		$response =mobValidate($data['tel'], $data['code']);
-		if ($response === true) {
+		$response =mobValidate($data['tel'], $data['code'],$this->input->post('type',FALSE,0));
+		if ($response === TRUE) {
 			$this->db->where('id',$token['id'])->update('user',['tel',$data['tel']])?ajax(0, '验证码正确，注册成功!') : ajax(0, '服务器繁忙，请重试！');
 		}else {
 			$response==468?ajax(1004, '验证码错误!'):ajax(1, '验证码平台出错!'.$response);
