@@ -29,7 +29,7 @@ var pending = {
          }
 
          window.page = 0;
-         $.post("http://120.27.55.225/admin/placeList",{type:window.type,page:window.page},function ( json ) {
+         $.post("/admin/placeList",{type:window.type,page:window.page},function ( json ) {
              if( json.status == 0){
                  pending.loadList(json.data);
              }
@@ -42,7 +42,7 @@ var pending = {
              if(window.page<0){
                   window.page = 0;
              }
-             $.post("http://120.27.55.225/admin/placeList",{type:window.type,page:window.page},function ( json ){
+             $.post("/admin/placeList",{type:window.type,page:window.page},function ( json ){
                  if( json.status == 0){
                      $('.nav-list').html(" ");
                      pending.loadList(json.data);
@@ -53,7 +53,7 @@ var pending = {
          $('#next').on('click',function(){
              page++;
              console.log(page);
-             $.post("http://120.27.55.225/admin/placeList",{type:window.type,page:window.page},function ( json ){
+             $.post("/admin/placeList",{type:window.type,page:window.page},function ( json ){
                  if( json.status == 0){
                      $('.nav-list').html(" ");
                      pending.loadList(json.data);
@@ -154,10 +154,10 @@ var pending = {
         $('#sub').on('click',function(){
             document.getElementById('sub').preventDefault;
             this.dealData();
-            $.post("http://120.27.55.225/index.php/place/add",$('#auditedPlace').serialize(),function( json ){
+            $.post("/index.php/place/add",$('#auditedPlace').serialize(),function( json ){
                 if( json.status == 0){
                     alert("提交成功");
-                    window.location = "http://120.27.55.225/admin/view/audited";
+                    window.location = "/admin/view/audited";
                 } else{
                     alert("fialed");
                 }
