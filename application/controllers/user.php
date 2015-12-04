@@ -170,6 +170,14 @@ class User extends CI_Controller {
 		ajax(0,'',$this->m->getInfo($res));
 	}
 	
+	function refreshRong() {
+		if (!$this->m->check()) noRights();
+		$res=$this->db->find('user', UID,'id','id,name,avatar');
+		$this->load->library('rc');
+		$token=$this->rc->RCgetToken($res);
+		$token['status']?ajax(0,'',['token'=>$token['code']]):ajax(2,'error:'.$token['code']);
+	}
+	
 	function attend()
 	{
 		if (!$this->m->check()) noRights();

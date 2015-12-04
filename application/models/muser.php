@@ -30,9 +30,7 @@ class Muser extends CI_Model {
 		if ($result['rongToken']==''){
 			$this->load->library('rc');
 			$token=$this->rc->RCgetToken($result);
-			if ($token['status'])
-				$result['rongToken']=$token['code'];
-			else ajax(2,'融云平台出错！'.$token['code']);
+			$result['rongToken']=$token['status']?$token['code']:'';//失败但是要正常登陆
 		}
 		$this->db->where('id',$result['id'])->update('user',['token'=>$result['token'],'type'=>0,'rongToken'=>$result['rongToken']]);
 		return $this->getInfo($result);

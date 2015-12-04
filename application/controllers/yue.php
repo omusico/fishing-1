@@ -48,7 +48,19 @@ class Yue extends CI_Controller {
 		$this->load->model('muser');
 		$this->muser->check() OR noRights();
 		$id=(int)$this->input->post('id') OR errInput();
-		$res=$this->db->query("SELECT id,avatar,name FROM (SELECT uid FROM yue_people WHERE yid=?) JOIN user ON uid=id")->result_array();
+// 		$uid=$this->db->find('yue', $id,'id','uid');
+// 		$uid OR ajax(5001,'此记录不存在');
+// 		$uid==UID OR noRights();
+		$res=$this->db->query("SELECT id,avatar,name FROM (SELECT uid FROM yue_people WHERE yid=?) people JOIN user ON uid=id",$id)->result_array();
+		ajax(0,'',$res);
+	}
+	
+	function getMyList() {
+		$this->load->model('muser');
+		$this->muser->check() OR noRights();
+		$res=$this->db->where("id in (SELECT yid FROM yue_people WHERE uid=".UID.")",null,FALSE)
+			->select("id,uid,(SELECT name FROM user WHERE user.id=uid) authorName,(SELECT avatar FROM user WHERE user.id=uid) authorAvatar,title,time")
+			->get('yue')->result_array();
 		ajax(0,'',$res);
 	}
 }

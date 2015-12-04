@@ -1,7 +1,13 @@
 <?php 
-	function mobValidate($userTel, $userCode){
-		$appKey = 'a5be1fdc254c'; // appKey
-		$api = 'https://web.sms.mob.com/sms/verify'; // 请求地址
+	function mobValidate($userTel, $userCode,$type){
+		if ($type){
+			return TRUE;
+			$appKey='b61941f21a78';
+			$api = 'https://api.sms.mob.com/sms/verify';
+		}else{
+			$appKey = 'a5be1fdc254c'; // appKey
+			$api = 'https://web.sms.mob.com/sms/verify'; // 请求地址
+		}
 		// 请求参数
 		$params = array(
 			'appkey' => $appKey,
@@ -9,7 +15,6 @@
 			'zone' => '86',
 			'code' => $userCode
 		);
-
 		$ch = curl_init();
 		curl_setopt($ch, CURLOPT_URL, $api);
 		// 以返回的形式接收信息
@@ -29,8 +34,8 @@
 		$response = curl_exec($ch);
 		curl_close($ch);
 		if ($response){
-			$response=json_decode($response,true);
-			return ($response['status']==200)?true:$response['status'];
+			$response=json_decode($response,TRUE);
+			return ($response['status']==200)?TRUE:$response['status'];
 		}else return 0;
 	}
 ?>
