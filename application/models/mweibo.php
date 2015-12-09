@@ -35,17 +35,15 @@ class Mweibo extends CI_Model {
 		$this->db->limit($limit['count'],$limit['page']*$limit['count']);
 		switch ($limit['type']){
 			case 0:$info=$this->db->query('SELECT SUM(visitCount) sum,COUNT(*) count FROM weibo')->row_array();
-			$this->db->where("visitCount>=",floor($info['sum']/($info['count']*3)),FALSE)//平均点击量的1/3
-				->order_by('id desc');
+			$this->db->order_by('id desc');
+// 				->where("visitCount>=",floor($info['sum']/($info['count']*3)),FALSE)//平均点击量的1/3
 				break;
 			case 1:
 				$this->db->where("authorId IN (SELECT toId FROM attention WHERE fromId=".UID.") OR authorId=".UID,null,FALSE)->order_by('id desc');
 				break;
 			case 2:
 				$this->load->helper('distance');
-				$range=GetRange($limit,30000);
-				$this->db->where("lat BETWEEN $range[minlat] AND $range[maxlat] AND lng BETWEEN $range[minlng] AND $range[maxlng]",null,FALSE)
-					->order_by("time",'desc');
+				$this->db->where("time >",time()-1296000,FALSE)->order_by("pow(lat-$limit[lat],2)+pow(lng-$limit[lng],2)",'asc');
 				break;
 			case 3:$this->db->where('authorId',$limit['id'])->order_by('id desc');
 				break;
