@@ -92,7 +92,7 @@ class User extends CI_Controller {
 		$this->load->helper('mob');
 		$response =mobValidate($data['tel'], $data['code'],$this->input->post('type',FALSE,0));
 		if ($response === TRUE) {
-			$this->db->where('id',$token['id'])->update('user',['tel',$data['tel']])?ajax(0, '验证码正确，注册成功!') : ajax(0, '服务器繁忙，请重试！');
+			$this->db->where('id',$token['id'])->update('user',['tel'=>$data['tel']])?ajax(0, '验证码正确，注册成功!') : ajax(0, '服务器繁忙，请重试！');
 		}else {
 			$response==468?ajax(1004, '验证码错误!'):ajax(1, '验证码平台出错!'.$response);
 		}
